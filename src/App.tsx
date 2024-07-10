@@ -1,15 +1,13 @@
-import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Home } from "./components/Home";
 
 function App() {
 
   return (
     <>
-      <h1>HOME PAGE</h1>
-      <div className="card">
-        THIS IS THE HOME  PAGE
-      </div>
+      <Home />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
