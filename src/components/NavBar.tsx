@@ -1,18 +1,20 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
-
 export const NavBar = () => {
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
-        <Container>
-            <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#link">Link</Nav.Link>
-            </Nav>
-            </Navbar.Collapse>
-        </Container>
-        </Navbar>
+        <nav className="navbar navbar-light bg-light px-4">
+            <div className="container-fluid d-flex flex-row justify-content-between align-items-center">
+                <a className="navbar-brand" href="#">
+                    <img className="logo" src="../../public/house-hand.png" alt="logo" />
+                    <div className="ms-2">Home Chores</div>
+                </a>
+                <div className="align-items-center d-flex">
+                        <img className="user-thumb" src="default-user-thumb.png" alt="user profile thumbnail" />  
+                        <span className="ms-2">Login</span>
+                    </div>
+                    {/* 
+                        Will display if user is logged
+                        Signed in as: <a href="#login">Mark Otto</a> 
+                    */}
+            </div>
+        </nav>
     );
 };
