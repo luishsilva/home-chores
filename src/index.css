@@ -31,6 +31,15 @@ body  {
   width: 20rem;
   height: 20rem;
 }
+
+a {
+  font-weight: 500;
+  color: #212529;
+  text-decoration: none;
+}
+a:hover {
+  color: #212529;
+}
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
