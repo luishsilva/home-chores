@@ -28,8 +28,8 @@ body  {
 }
 
 .home-img {
-  width: 20rem;
-  height: 20rem;
+  width: 25rem;
+  height: 25rem;
 }
 
 a {
@@ -37,8 +37,21 @@ a {
   color: #212529;
   text-decoration: none;
 }
+
 a:hover {
   color: #212529;
+}
+
+.btn-create-account a{
+  color: #fff;
+}
+
+.login-container {
+  height: 100vh;
+}
+
+.login-form {
+  max-width: 20.625rem;
 }
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
