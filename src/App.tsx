@@ -4,18 +4,22 @@ import { NavBar } from './components/NavBar';
 import { Home } from "./components/Home";
 import { Login } from "./components/Login";
 import { Register } from './components/Register';
+import { Footer } from './components/Footer';
 
 function App() {
 
   return (
-    <Router>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </Router>
+    <div className="app">
+      <Router>
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+          <Footer />
+      </Router>
+    </div>
   );
 };
 

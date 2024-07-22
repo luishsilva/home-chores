@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 export const Home = () => (
-    <div className='d-flex flex-column vh-100'>
+    <main className="d-flex flex-column flex-grow-1">
         <div className="d-flex align-items-center justify-content-center flex-grow-1 flex-wrap-reverse">
             <div>
                 <div className="fs-2 font-weight-bold">
@@ -20,10 +20,5 @@ export const Home = () => (
                 <img className="home-img" src="/people-helping-2.png" alt="People Helping" />
             </div>
         </div>
-        <div className="h-auto bg-light">
-            <div className="mb-5 mt-5 px-4">
-                Footer
-            </div>
-        </div>
-    </div>
+    </main>
 );
