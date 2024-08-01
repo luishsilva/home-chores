@@ -30,6 +30,10 @@
   max-width: 20.625rem;
 }
 
+.login-form label {
+  cursor: pointer;
+}
+
 footer {
   background-color: #333;
   color: white;

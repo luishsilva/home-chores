@@ -44,7 +44,7 @@ const Login = () => (
         Sign in
       </button>
       <span>
-        Not a member? <Link to="/register">Register</Link>
+        Not a member? <Link to="/signup">Sign up</Link>
       </span>
       <p className="mt-5 text-body-secondary text-center">
         &copy; 2024–{currentYear}

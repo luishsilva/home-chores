@@ -8,7 +8,7 @@ const Home = () => (
           <div>Join Hands, Organize Together, Free Up Time</div>
           <div>Everyone`&apos;s Effort Counts!.</div>
         </div>
-        <Link to="/register">
+        <Link to="/signup">
           <div className="btn-create-account col-6 d-grid mt-5 mx-auto">
             <button className="btn btn-primary" type="button">
               Create an account
