@@ -2,31 +2,13 @@
     "users": [
       {
         "id": 1,
-        "name": "Admin Participant",
+        "firstName": "Admin",
+        "lastName": "Admin",
         "thumbnail": "/assets/picture1.png",
         "description": "Can edit chores, add/remove participants, mark chore as reviewed and finished",
         "isAdmin": true,
         "username": "admin_participant@housechor.com",
         "password": "secret"
-      },
-      {
-        "id": 2,
-        "name": "Participant 2",
-        "thumbnail": "/assets/picture2.png",
-        "description": "Cannot edit chores, add/remove participants nor review and mark chore as finished, can check chore as done",
-        "isAdmin": false,
-        "username": "participant2@housechor.com",
-        "password": "secret"
-      },
-      {
-        "id": 3,
-        "name": "Participant 3",
-        "thumbnail": "/assets/picture2.png",
-        "description": "Cannot edit chores, add/remove participants nor review and mark chore as finished, can check chore as done",
-        "isAdmin": false,
-        "username": "participant3@housechor.com",
-        "password": "secret"
-
       }
     ],
     "chores": [
