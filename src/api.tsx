@@ -1,21 +1,20 @@
-import { User } from './types/UserType';
+import { UserType } from './types/UserType';
 
-const BASE_URL = 'http://localhost:3000/';
+const BASE_URL = 'http://localhost:3000';
 
-const postSignUp = (user: Omit<User, 'id'>) => {
+const postSignUp = (user: UserType) => {
   return fetch(`${BASE_URL}/users`, {
-    body: JSON.stringify(user),
+    body: JSON.stringify({
+      ...user,
+      isAdmin: true,
+    }),
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
   }).then((response) => {
     if (!response.ok) {
-      return response.json().then((error) => {
-        throw new Error(
-          `HTTP failed with status ${response.status}: ${error.message}`
-        );
-      });
+      throw new Error(`HTTP failed: ${response.statusText}`);
     }
     return response.json();
   });
