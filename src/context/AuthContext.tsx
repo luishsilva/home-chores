@@ -1,48 +1,62 @@
-import { createContext, ReactNode, useState, useMemo, FC } from 'react';
-
-type UserType = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-};
+import {
+  createContext,
+  ReactNode,
+  useState,
+  useMemo,
+  useCallback,
+  FC,
+} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserType } from '../types/UserType';
+import Requests from '../api';
 
 type AuthContextType = {
   user: UserType | null;
-  signup: (UserData: UserType) => void;
+  signup: (userData: UserType) => Promise<void>;
+  isLoading: boolean;
 };
 
 type AuthProviderType = {
   children: ReactNode;
 };
 
-// const BASE_URL = 'http://localhost:3000/';
-
-const defaultAuthContextValue: AuthContextType = {
+/**
+ * ensures that the context has a default value that matches the expected shape (AuthContextType)
+ */
+export const AuthContext = createContext<AuthContextType>({
   user: null,
-  signup: () => {},
-};
-
-export const AuthContext = createContext<AuthContextType>(
-  defaultAuthContextValue
-);
+  signup: async (): Promise<void> => {
+    throw new Error('Function not implemented.');
+  },
+  isLoading: false,
+});
 
 export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
   const [user, setUser] = useState<UserType | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const signup = (userData: UserType) => {
-    // only set user if response from server is ok, simulating only now change code in the future to do it
-    setUser(userData);
-    /* fetch(`${BASE_URL}/signup`, {
-      method: 'POST',
-      body: JSON.stringify(user),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((response) => response.json); */
-  };
+  const navigate = useNavigate();
 
-  const contextValue = useMemo(() => ({ user, signup }), [user]);
+  const signup = useCallback(
+    (userData: UserType) => {
+      setIsLoading(true);
+      return Requests.postSignUp(userData)
+        .then(() => {
+          setUser(userData);
+          navigate('/login');
+        })
+        .catch(() => {
+          console.error('Sorry something went wrong, please try again later');
+        })
+        .finally(() => setIsLoading(false));
+    },
+    [navigate]
+  );
+
+  const contextValue = useMemo(
+    () => ({ user, signup, isLoading }),
+    [user, signup, isLoading]
+  );
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
