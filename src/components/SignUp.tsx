@@ -1,19 +1,18 @@
 import { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const SignUp = () => {
   const [formInputValues, setFormInputValues] = useState({
+    email: '',
     firstName: '',
     lastName: '',
-    email: '',
     password: '',
+    thumbnail: '',
   });
 
   const authContext = useContext(AuthContext);
-  const { user, signup } = authContext;
-
-  const nagivate = useNavigate();
+  const { signup, isLoading } = authContext;
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -29,11 +28,6 @@ const SignUp = () => {
   ) => {
     event.preventDefault();
     signup(formInputValues);
-
-    if (user) {
-      console.log(user);
-      nagivate('/login');
-    }
     return null;
   };
 
@@ -95,6 +89,7 @@ const SignUp = () => {
 
         <button
           className="btn btn-primary w-100 py-2 mb-2 mt-3"
+          disabled={isLoading}
           onClick={handleSignUpClick}
           type="submit"
         >
