@@ -5,6 +5,7 @@ import {
   useMemo,
   useCallback,
   FC,
+  useContext,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserType } from '../types/UserType';
@@ -62,3 +63,5 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);

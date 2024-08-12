@@ -1,6 +1,6 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 const SignUp = () => {
   const [formInputValues, setFormInputValues] = useState({
@@ -11,8 +11,7 @@ const SignUp = () => {
     thumbnail: '',
   });
 
-  const authContext = useContext(AuthContext);
-  const { signup, isLoading } = authContext;
+  const { signup, isLoading } = useAuth();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
