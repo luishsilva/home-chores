@@ -79,7 +79,7 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
       setIsLoading(true);
       const { email, password } = userData;
 
-      Requests.getAllUsers()
+      return Requests.getAllUsers()
         .then((response) => {
           const emailFound = response.find(
             (res: UserSignInType) => res.email === email
