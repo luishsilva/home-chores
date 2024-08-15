@@ -8,12 +8,13 @@ import {
   useContext,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserType } from '../types/UserType';
+import { UserSignInType, UserType } from '../types/UserType';
 import Requests from '../api';
 
 type AuthContextType = {
   user: UserType | null;
-  signup: (userData: UserType) => Promise<void>;
+  signUp: (userData: UserType) => Promise<void>;
+  signIn: (userData: UserSignInType) => Promise<void>;
   isLoading: boolean;
 };
 
@@ -26,8 +27,11 @@ type AuthProviderType = {
  */
 export const AuthContext = createContext<AuthContextType>({
   user: null,
-  signup: async (): Promise<void> => {
+  signUp: async (): Promise<void> => {
     throw new Error('Function not implemented.');
+  },
+  signIn: async (): Promise<void> => {
+    throw new Error('Function not implemented');
   },
   isLoading: false,
 });
@@ -38,7 +42,7 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
 
   const navigate = useNavigate();
 
-  const signup = useCallback(
+  const signUp = useCallback(
     (userData: UserType) => {
       setIsLoading(true);
       return Requests.postSignUp(userData)
@@ -54,9 +58,37 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
     [navigate]
   );
 
+  const signIn = useCallback(
+    (userData: UserSignInType) => {
+      setIsLoading(true);
+      const { email, password } = userData;
+
+      Requests.getAllUsers()
+        .then((response) => {
+          const emailFound = response.find(
+            (res: UserSignInType) => res.email === email
+          );
+          const passwordFound = response.find(
+            (res: UserSignInType) => res.password === password
+          );
+          if (!emailFound) {
+            throw new Error('Email not found');
+          }
+          if (!passwordFound) {
+            throw new Error('Password not found');
+          }
+          // at this point email and password are valid entries
+          setUser(emailFound);
+          navigate('/dashboard');
+        })
+        .finally(() => setIsLoading(false));
+    },
+    [navigate]
+  );
+
   const contextValue = useMemo(
-    () => ({ user, signup, isLoading }),
-    [user, signup, isLoading]
+    () => ({ user, signIn, signUp, isLoading }),
+    [user, signIn, signUp, isLoading]
   );
 
   return (
