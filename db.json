@@ -8,6 +8,15 @@
       "password": "qwert",
       "thumbnail": "",
       "isAdmin": true
+    },
+    {
+      "id": "3fec",
+      "email": "lucas@gmail.com",
+      "firstName": "Lucas",
+      "lastName": "Silva",
+      "password": "qwerty",
+      "thumbnail": "",
+      "isAdmin": true
     }
   ],
   "chores": [
