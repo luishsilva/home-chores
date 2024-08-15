@@ -11,7 +11,7 @@ const SignUp = () => {
     thumbnail: '',
   });
 
-  const { signup, isLoading } = useAuth();
+  const { signUp, isLoading } = useAuth();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -26,7 +26,7 @@ const SignUp = () => {
     event
   ) => {
     event.preventDefault();
-    signup(formInputValues);
+    signUp(formInputValues);
     return null;
   };
 

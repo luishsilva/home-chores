@@ -1,20 +1,20 @@
 {
   "users": [
     {
-      "id": "a388",
+      "id": "2d51",
       "email": "luis@gmail.com",
       "firstName": "Luis",
       "lastName": "Silva",
-      "password": "qwert",
+      "password": "q1w2e3",
       "thumbnail": "",
       "isAdmin": true
     },
     {
-      "id": "3fec",
-      "email": "lucas@gmail.com",
-      "firstName": "Lucas",
+      "id": "f857",
+      "email": "luis@gmail.com",
+      "firstName": "Luis",
       "lastName": "Silva",
-      "password": "qwerty",
+      "password": "q1w2e3",
       "thumbnail": "",
       "isAdmin": true
     }

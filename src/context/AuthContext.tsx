@@ -6,6 +6,7 @@ import {
   useCallback,
   FC,
   useContext,
+  useEffect,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserSignInType, UserType } from '../types/UserType';
@@ -40,6 +41,14 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
   const [user, setUser] = useState<UserType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  useEffect(() => {
+    const isUserLocalStorage = localStorage.getItem('currentUser');
+    if (isUserLocalStorage) {
+      const loggedUser: UserType = JSON.parse(isUserLocalStorage);
+      setUser(loggedUser);
+    }
+  }, []);
+
   const navigate = useNavigate();
 
   const signUp = useCallback(
@@ -47,6 +56,13 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
       setIsLoading(true);
       return Requests.postSignUp(userData)
         .then(() => {
+          /**
+           * Note: Setting the user from local storage is not ideal since
+           * anyone who knows how to manipulate local storage can compromise
+           * your login. This is for study purposes only.
+           * User is set in local storage when sign up
+           */
+          localStorage.setItem('currentUser', JSON.stringify(userData));
           setUser(userData);
           navigate('/login');
         })
@@ -77,8 +93,8 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
           if (!passwordFound) {
             throw new Error('Password not found');
           }
-          // at this point email and password are valid entries
-          setUser(emailFound);
+          // if user is in the db.json but not in the local storage should I add the user in the local storage from the sign page?
+          // setUser(emailFound);
           navigate('/dashboard');
         })
         .finally(() => setIsLoading(false));
