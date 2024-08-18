@@ -10,9 +10,27 @@
       "isAdmin": true
     },
     {
-      "id": "f857",
-      "email": "luis@gmail.com",
-      "firstName": "Luis",
+      "id": "702a",
+      "email": "lucas@gmail.com",
+      "firstName": "Lucas",
+      "lastName": "Silva",
+      "password": "q1w2e3",
+      "thumbnail": "",
+      "isAdmin": true
+    },
+    {
+      "id": "eb7e",
+      "email": "luisa@gmail.com",
+      "firstName": "Luisa",
+      "lastName": "Silva",
+      "password": "q1w2e3",
+      "thumbnail": "",
+      "isAdmin": true
+    },
+    {
+      "id": "e3da",
+      "email": "luana@gmail.com",
+      "firstName": "Luana",
       "lastName": "Silva",
       "password": "q1w2e3",
       "thumbnail": "",

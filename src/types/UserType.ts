@@ -7,6 +7,7 @@ const userSchema = z.object({
   lastName: z.string(),
   password: z.string(),
   thumbnail: z.string(),
+  isUserLogged: z.boolean(),
 });
 
 export type UserType = z.infer<typeof userSchema>;

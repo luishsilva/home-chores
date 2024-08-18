@@ -17,6 +17,7 @@ type AuthContextType = {
   signUp: (userData: UserType) => Promise<void>;
   signIn: (userData: UserSignInType) => Promise<void>;
   isLoading: boolean;
+  logOff: () => void;
 };
 
 type AuthProviderType = {
@@ -35,9 +36,11 @@ export const AuthContext = createContext<AuthContextType>({
     throw new Error('Function not implemented');
   },
   isLoading: false,
+  logOff: () => {},
 });
 
 export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<UserType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -48,8 +51,6 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
       setUser(loggedUser);
     }
   }, []);
-
-  const navigate = useNavigate();
 
   const signUp = useCallback(
     (userData: UserType) => {
@@ -62,8 +63,9 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
            * your login. This is for study purposes only.
            * User is set in local storage when sign up
            */
-          localStorage.setItem('currentUser', JSON.stringify(userData));
-          setUser(userData);
+          const newUser = { ...userData, isUserLogged: false };
+          localStorage.setItem('currentUser', JSON.stringify(newUser));
+          setUser(newUser);
           navigate('/login');
         })
         .catch(() => {
@@ -94,7 +96,11 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
             throw new Error('Password not found');
           }
           // if user is in the db.json but not in the local storage should I add the user in the local storage from the sign page?
-          // setUser(emailFound);
+
+          // using emailFound to set the current user because at this point the user is already validated
+          const loggedUser = { ...emailFound, isUserLogged: true };
+          localStorage.setItem('currentUser', JSON.stringify(loggedUser));
+          setUser(loggedUser);
           navigate('/dashboard');
         })
         .finally(() => setIsLoading(false));
@@ -102,9 +108,15 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
     [navigate]
   );
 
+  const logOff = useCallback(() => {
+    setUser(null);
+    localStorage.removeItem('currentUser');
+    navigate('/login');
+  }, [navigate, setUser]);
+
   const contextValue = useMemo(
-    () => ({ user, signIn, signUp, isLoading }),
-    [user, signIn, signUp, isLoading]
+    () => ({ isLoading, logOff, signIn, signUp, user }),
+    [isLoading, logOff, signIn, signUp, user]
   );
 
   return (

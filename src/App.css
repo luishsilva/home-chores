@@ -34,6 +34,10 @@
   cursor: pointer;
 }
 
+.font-small-075 {
+  font-size: 0.75rem;
+}
+
 footer {
   background-color: #333;
   color: white;
