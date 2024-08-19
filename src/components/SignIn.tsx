@@ -2,9 +2,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const currentDate = new Date();
-const currentYear = currentDate.getFullYear();
-
 const SignIn = () => {
   const [formInputValues, setFormInputValues] = useState({
     email: '',
@@ -31,7 +28,11 @@ const SignIn = () => {
   };
 
   return (
-    <div className="align-items-center d-flex login-container justify-content-center">
+    <div className="align-items-center d-flex flex-column login-container justify-content-center">
+      <div className="align-items-center d-flex mb-5">
+        <img className="logo" src="../../public/house-hand.png" alt="logo" />
+        <div className="ms-2">Home Chores</div>
+      </div>
       <form className="login-form col-12">
         <div className="mb-3">
           <input
@@ -82,9 +83,6 @@ const SignIn = () => {
         <span>
           Not a member? <Link to="/signup">Sign up</Link>
         </span>
-        <p className="mt-5 text-body-secondary text-center">
-          &copy; 2024–{currentYear}
-        </p>
       </form>
     </div>
   );

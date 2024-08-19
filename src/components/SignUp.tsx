@@ -9,6 +9,7 @@ const SignUp = () => {
     lastName: '',
     password: '',
     thumbnail: '',
+    isLogged: false,
   });
 
   const { signUp, isLoading } = useAuth();
@@ -31,7 +32,11 @@ const SignUp = () => {
   };
 
   return (
-    <div className="align-items-center d-flex login-container justify-content-center">
+    <div className="align-items-center d-flex flex-column login-container justify-content-center">
+      <div className="align-items-center d-flex mb-5">
+        <img className="logo" src="../../public/house-hand.png" alt="logo" />
+        <div className="ms-2">Home Chores</div>
+      </div>
       <form className="login-form col-12">
         <div className="mb-3">
           <input
