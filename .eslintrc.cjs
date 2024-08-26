@@ -32,5 +32,6 @@ module.exports = {
     'react/function-component-definition': 'off',
     'prefer-default-export': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
+    'react/require-default-props': 'off',
   },
 };
