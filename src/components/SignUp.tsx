@@ -45,7 +45,7 @@ const SignUp = () => {
             name="firstName"
             onChange={handleInputChange}
             placeholder="John"
-            type="First name"
+            type="text"
           />
           <label className="mt-1" htmlFor="firstName">
             First name
@@ -58,7 +58,7 @@ const SignUp = () => {
             name="lastName"
             onChange={handleInputChange}
             placeholder="Doe"
-            type="Last name"
+            type="text"
           />
           <label className="mt-1" htmlFor="lastName">
             Last name

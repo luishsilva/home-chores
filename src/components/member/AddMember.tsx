@@ -1,16 +1,20 @@
 import { useState } from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import toast from 'react-hot-toast';
 import SideMenu from '../SideMenu';
 import { useAuth } from '../../context/AuthContext';
 
 const AddMember = () => {
-  const [formInputValues, setFormInputValues] = useState({
+  const initialValues = {
     email: '',
     firstName: '',
     isLogged: false,
     lastName: '',
     password: '',
     thumbnail: '',
-  });
+  };
+
+  const [formInputValues, setFormInputValues] = useState(initialValues);
 
   const { addMember, isLoading } = useAuth();
 
@@ -27,8 +31,10 @@ const AddMember = () => {
     event
   ) => {
     event.preventDefault();
-    addMember(formInputValues);
-    return null;
+    addMember(formInputValues).then(() => {
+      setFormInputValues(initialValues);
+      toast.success('Member added successfully');
+    });
   };
 
   return (
@@ -46,7 +52,8 @@ const AddMember = () => {
               name="firstName"
               onChange={handleInputChange}
               placeholder="John"
-              type="First name"
+              type="text"
+              value={formInputValues.firstName}
             />
           </div>
           <div className="mb-3">
@@ -59,7 +66,8 @@ const AddMember = () => {
               name="lastName"
               onChange={handleInputChange}
               placeholder="Doe"
-              type="Last name"
+              type="text"
+              value={formInputValues.lastName}
             />
           </div>
           <div className="mb-3">
@@ -73,6 +81,7 @@ const AddMember = () => {
               onChange={handleInputChange}
               placeholder="name@example.com"
               type="email"
+              value={formInputValues.email}
             />
           </div>
           <div>
@@ -86,6 +95,7 @@ const AddMember = () => {
               onChange={handleInputChange}
               placeholder="Password"
               type="password"
+              value={formInputValues.password}
             />
           </div>
           <button
