@@ -1,6 +1,6 @@
 import { UserSignInType, UserType } from './types/UserType';
 import { UserMemberType } from './types/UserMemberType';
-import { getCurrentUser } from './functions/userLocalStorage';
+import getCurrentUser from './functions/userLocalStorage';
 
 const BASE_URL = 'http://localhost:3000';
 
