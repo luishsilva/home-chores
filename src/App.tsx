@@ -5,6 +5,7 @@ import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Dashboard from './components/dashboard/Dashboard';
 import Chores from './components/Chores';
+import AddMember from './components/member/AddMember';
 import { AuthProvider } from './context/AuthContext';
 
 const App = () => {
@@ -14,10 +15,11 @@ const App = () => {
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/chores" element={<Chores />} />
+            <Route path="login" element={<SignIn />} />
+            <Route path="signup" element={<SignUp />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="chores" element={<Chores />} />
+            <Route path="add-member" element={<AddMember />} />
           </Routes>
         </AuthProvider>
       </Router>
