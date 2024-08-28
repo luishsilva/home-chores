@@ -7,8 +7,8 @@ import DashboardCard from './DashboardCard';
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  if (!user?.isUserLogged) {
-    navigate('/login');
+  if (!user) {
+    navigate('/');
   }
   /* 
    if (user === undefined) {
@@ -17,7 +17,6 @@ const Dashboard = () => {
   useEffect(() => {
     navigate('/login');
   }, [user, navigate]); */
-
   return (
     <main className="d-flex h-100 bg-light">
       <SideMenu />

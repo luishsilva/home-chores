@@ -13,11 +13,12 @@ import { UserSignInType, UserType } from '../types/UserType';
 import Requests from '../api';
 
 type AuthContextType = {
-  user: UserType | null;
-  signUp: (userData: UserType) => Promise<void>;
-  signIn: (userData: UserSignInType) => Promise<void>;
+  addMember: (userData: UserType) => Promise<void>;
   isLoading: boolean;
   logOff: () => void;
+  signIn: (userData: UserSignInType) => Promise<void>;
+  signUp: (userData: UserType) => Promise<void>;
+  user: UserType | null;
 };
 
 type AuthProviderType = {
@@ -28,15 +29,18 @@ type AuthProviderType = {
  * ensures that the context has a default value that matches the expected shape (AuthContextType)
  */
 export const AuthContext = createContext<AuthContextType>({
-  user: null,
-  signUp: async (): Promise<void> => {
-    throw new Error('Function not implemented.');
-  },
-  signIn: async (): Promise<void> => {
-    throw new Error('Function not implemented');
+  addMember: async (): Promise<void> => {
+    throw new Error('Function not addMember implemented.');
   },
   isLoading: false,
   logOff: () => {},
+  signIn: async (): Promise<void> => {
+    throw new Error('Function not signIn implemented');
+  },
+  signUp: async (): Promise<void> => {
+    throw new Error('Function not signUp implemented.');
+  },
+  user: null,
 });
 
 export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
@@ -63,7 +67,7 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
            * your login. This is for study purposes only.
            * User is set in local storage when sign up
            */
-          const newUser = { ...userData, isUserLogged: false };
+          const newUser = { ...userData, isLogged: false };
           localStorage.setItem('currentUser', JSON.stringify(newUser));
           setUser(newUser);
           navigate('/login');
@@ -98,7 +102,7 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
           // if user is in the db.json but not in the local storage should I add the user in the local storage from the sign page?
 
           // using emailFound to set the current user because at this point the user is already validated
-          const loggedUser = { ...emailFound, isUserLogged: true };
+          const loggedUser = { ...emailFound, isLogged: true };
           localStorage.setItem('currentUser', JSON.stringify(loggedUser));
           setUser(loggedUser);
           navigate('/dashboard');
@@ -108,6 +112,19 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
     [navigate]
   );
 
+  const addMember = useCallback((userData: UserType) => {
+    setIsLoading(true);
+    return Requests.postAddMember(userData)
+      .then(() => {
+        const newUser = { ...userData, isLogged: false };
+        setUser(newUser);
+      })
+      .catch(() => {
+        console.error('Sorry something went wrong, please try again later');
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
+
   const logOff = useCallback(() => {
     setUser(null);
     localStorage.removeItem('currentUser');
@@ -115,8 +132,8 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
   }, [navigate, setUser]);
 
   const contextValue = useMemo(
-    () => ({ isLoading, logOff, signIn, signUp, user }),
-    [isLoading, logOff, signIn, signUp, user]
+    () => ({ addMember, isLoading, logOff, signIn, signUp, user }),
+    [addMember, isLoading, logOff, signIn, signUp, user]
   );
 
   return (

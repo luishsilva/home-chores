@@ -6,10 +6,10 @@ const SignUp = () => {
   const [formInputValues, setFormInputValues] = useState({
     email: '',
     firstName: '',
+    isLogged: false,
     lastName: '',
     password: '',
     thumbnail: '',
-    isLogged: false,
   });
 
   const { signUp, isLoading } = useAuth();

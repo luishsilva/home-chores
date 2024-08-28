@@ -1,13 +1,12 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { z } from 'zod';
 
 const userSchema = z.object({
   email: z.string(),
   firstName: z.string(),
+  isLogged: z.boolean(),
   lastName: z.string(),
   password: z.string(),
   thumbnail: z.string(),
-  isUserLogged: z.boolean(),
 });
 
 export type UserType = z.infer<typeof userSchema>;

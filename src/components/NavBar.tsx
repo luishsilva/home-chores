@@ -28,12 +28,12 @@ const NavBar = () => {
               src="default-user-thumb.png"
               alt="user profile thumbnail"
             />
-            {!user?.isUserLogged && (
+            {!user?.isLogged && (
               <Link className="" to="/login">
                 <span className="ms-2">Login</span>
               </Link>
             )}
-            {user?.isUserLogged && (
+            {user?.isLogged && (
               <div>
                 <div className="ms-2">{user?.firstName}</div>
                 <button
