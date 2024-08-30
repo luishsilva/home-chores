@@ -1,8 +1,7 @@
 import { UserMemberType, UserSignInType, UserType } from './types/UserType';
-import getCurrentUser from './functions/userLocalStorage';
+import { getCurrentUserId } from './functions/userLocalStorage';
 
 const BASE_URL = 'http://localhost:3000';
-const currentUser = getCurrentUser();
 
 const getAllUsers = () => {
   return fetch(`${BASE_URL}/users`, {
@@ -16,7 +15,9 @@ const getAllUsers = () => {
 };
 
 const getUserGroupMembers = () => {
-  return fetch(`${BASE_URL}/user_members?groupOwnerId=${currentUser?.id}`, {
+  const { id } = getCurrentUserId();
+
+  return fetch(`${BASE_URL}/user_members?groupOwnerId=${id}`, {
     method: 'GET',
   }).then((response) => {
     if (!response.ok) {
@@ -99,13 +100,13 @@ const postAddMember = async (user: UserType) => {
     if (!response.ok) {
       throw new Error(`HTTP failed: ${response.statusText}`);
     }
-
+    const { id } = getCurrentUserId();
     const data = await response.json();
 
-    if (currentUser) {
+    if (id) {
       await postUserMember({
         userId: data.id,
-        groupOwnerId: currentUser.id,
+        groupOwnerId: id,
       });
     } else {
       throw new Error('No current user found or user ID missing.');
