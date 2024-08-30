@@ -9,7 +9,7 @@ import {
   useEffect,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserSignInType, UserType } from '../types/UserType';
+import { UserMemberType, UserSignInType, UserType } from '../types/UserType';
 import Requests from '../api';
 
 type AuthContextType = {
@@ -19,6 +19,7 @@ type AuthContextType = {
   signIn: (userData: UserSignInType) => Promise<void>;
   signUp: (userData: UserType) => Promise<void>;
   user: UserType | null;
+  members: UserType[] | null;
 };
 
 type AuthProviderType = {
@@ -41,19 +42,46 @@ export const AuthContext = createContext<AuthContextType>({
     throw new Error('Function not signUp implemented.');
   },
   user: null,
+  members: null,
 });
 
 export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState<UserType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [members, setMembers] = useState<UserType[] | null>(null);
 
-  useEffect(() => {
+  const fetchData = async () => {
     const isUserLocalStorage = localStorage.getItem('currentUser');
     if (isUserLocalStorage) {
       const loggedUser: UserType = JSON.parse(isUserLocalStorage);
       setUser(loggedUser);
     }
+
+    try {
+      const usersResponse = await Requests.getAllUsers();
+
+      const membersResponse = await Requests.getUserGroupMembers();
+
+      // Merge members user with users table
+      const matchingMembers = membersResponse.reduce(
+        (acc: UserType[], member: UserMemberType) => {
+          const membersData = usersResponse.filter(
+            (userList: UserType) => userList?.id === member?.userId
+          );
+          return acc.concat(membersData);
+        },
+        []
+      );
+
+      setMembers(matchingMembers);
+    } catch (error) {
+      throw new Error(`Error fetching data:${error}`);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const signUp = useCallback(
@@ -112,18 +140,23 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
     [navigate]
   );
 
-  const addMember = useCallback((userData: UserType) => {
-    setIsLoading(true);
-    return Requests.postAddMember(userData)
-      .then(() => {
-        const newUser = { ...userData, isLogged: false };
-        setUser(newUser);
-      })
-      .catch(() => {
-        console.error('Sorry something went wrong, please try again later');
-      })
-      .finally(() => setIsLoading(false));
-  }, []);
+  const addMember = useCallback(
+    (userData: UserType) => {
+      setIsLoading(true);
+      return Requests.postAddMember(userData)
+        .then(() => {
+          const newUser = { ...userData, isLogged: false };
+          setUser(newUser);
+          fetchData();
+          console.log(members);
+        })
+        .catch(() => {
+          console.error('Sorry something went wrong, please try again later');
+        })
+        .finally(() => setIsLoading(false));
+    },
+    [members]
+  );
 
   const logOff = useCallback(() => {
     setUser(null);
@@ -132,8 +165,16 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
   }, [navigate, setUser]);
 
   const contextValue = useMemo(
-    () => ({ addMember, isLoading, logOff, signIn, signUp, user }),
-    [addMember, isLoading, logOff, signIn, signUp, user]
+    () => ({
+      addMember,
+      isLoading,
+      logOff,
+      signIn,
+      signUp,
+      user,
+      members,
+    }),
+    [addMember, isLoading, logOff, signIn, signUp, user, members]
   );
 
   return (

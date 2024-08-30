@@ -1,11 +1,22 @@
-import { UserSignInType, UserType } from './types/UserType';
-import { UserMemberType } from './types/UserMemberType';
+import { UserMemberType, UserSignInType, UserType } from './types/UserType';
 import getCurrentUser from './functions/userLocalStorage';
 
 const BASE_URL = 'http://localhost:3000';
+const currentUser = getCurrentUser();
 
 const getAllUsers = () => {
   return fetch(`${BASE_URL}/users`, {
+    method: 'GET',
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP failed with status ${response.status}`);
+    }
+    return response.json();
+  });
+};
+
+const getUserGroupMembers = () => {
+  return fetch(`${BASE_URL}/user_members?groupOwnerId=${currentUser?.id}`, {
     method: 'GET',
   }).then((response) => {
     if (!response.ok) {
@@ -90,7 +101,6 @@ const postAddMember = async (user: UserType) => {
     }
 
     const data = await response.json();
-    const currentUser = getCurrentUser();
 
     if (currentUser) {
       await postUserMember({
@@ -109,8 +119,9 @@ const postAddMember = async (user: UserType) => {
 };
 
 const Requests = {
-  postAddMember,
   getAllUsers,
+  getUserGroupMembers,
+  postAddMember,
   postSignUp,
   signIn,
 };
