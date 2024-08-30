@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 const userSchema = z.object({
+  id: z.string(),
   email: z.string(),
   firstName: z.string(),
   isLogged: z.boolean(),
@@ -17,3 +18,10 @@ const userSignInSchema = z.object({
 });
 
 export type UserSignInType = z.infer<typeof userSignInSchema>;
+
+const userMemberSchema = z.object({
+  userId: z.string(),
+  groupOwnerId: z.string(),
+});
+
+export type UserMemberType = z.infer<typeof userMemberSchema>;
