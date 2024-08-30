@@ -62,7 +62,6 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
       const usersResponse = await Requests.getAllUsers();
 
       const membersResponse = await Requests.getUserGroupMembers();
-
       // Merge members user with users table
       const matchingMembers = membersResponse.reduce(
         (acc: UserType[], member: UserMemberType) => {
@@ -101,7 +100,7 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
           navigate('/login');
         })
         .catch(() => {
-          console.error('Sorry something went wrong, please try again later');
+          throw new Error('Sorry something went wrong, please try again later');
         })
         .finally(() => setIsLoading(false));
     },
@@ -109,60 +108,61 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
   );
 
   const signIn = useCallback(
-    (userData: UserSignInType) => {
+    async (userData: UserSignInType) => {
       setIsLoading(true);
       const { email, password } = userData;
 
-      return Requests.getAllUsers()
-        .then((response) => {
-          const emailFound = response.find(
-            (res: UserSignInType) => res.email === email
-          );
-          const passwordFound = response.find(
-            (res: UserSignInType) => res.password === password
-          );
-          if (!emailFound) {
-            throw new Error('Email not found');
-          }
-          if (!passwordFound) {
-            throw new Error('Password not found');
-          }
-          // if user is in the db.json but not in the local storage should I add the user in the local storage from the sign page?
+      try {
+        const response = await Requests.getAllUsers();
+        const emailFound = response.find(
+          (res: UserSignInType) => res.email === email
+        );
+        const passwordFound = response.find(
+          (res: UserSignInType) => res.password === password
+        );
+        if (!emailFound) {
+          throw new Error('Email not found');
+        }
+        if (!passwordFound) {
+          throw new Error('Password not found');
+        }
 
-          // using emailFound to set the current user because at this point the user is already validated
-          const loggedUser = { ...emailFound, isLogged: true };
-          localStorage.setItem('currentUser', JSON.stringify(loggedUser));
-          setUser(loggedUser);
-          navigate('/dashboard');
-        })
-        .finally(() => setIsLoading(false));
+        const loggedUser = { ...emailFound, isLogged: true };
+        localStorage.setItem('currentUser', JSON.stringify(loggedUser));
+        setUser(loggedUser);
+
+        await fetchData();
+
+        navigate('/dashboard');
+      } catch (error) {
+        throw new Error(`Error please try again later ${error}`);
+      } finally {
+        setIsLoading(false);
+      }
     },
     [navigate]
   );
 
-  const addMember = useCallback(
-    (userData: UserType) => {
-      setIsLoading(true);
-      return Requests.postAddMember(userData)
-        .then(() => {
-          const newUser = { ...userData, isLogged: false };
-          setUser(newUser);
-          fetchData();
-          console.log(members);
-        })
-        .catch(() => {
-          console.error('Sorry something went wrong, please try again later');
-        })
-        .finally(() => setIsLoading(false));
-    },
-    [members]
-  );
+  const addMember = useCallback((userData: UserType) => {
+    setIsLoading(true);
+    return Requests.postAddMember(userData)
+      .then(() => {
+        const newUser = { ...userData, isLogged: false };
+        setUser(newUser);
+        fetchData();
+      })
+      .catch(() => {
+        throw new Error('Sorry something went wrong, please try again later');
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
 
   const logOff = useCallback(() => {
     setUser(null);
+    setMembers(null);
     localStorage.removeItem('currentUser');
     navigate('/login');
-  }, [navigate, setUser]);
+  }, [navigate]);
 
   const contextValue = useMemo(
     () => ({
