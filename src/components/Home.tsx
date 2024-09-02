@@ -10,7 +10,7 @@ const Home = () => (
         <div>
           <div className="fs-2 font-weight-bold">
             <div>Join Hands, Organize Together, Free Up Time</div>
-            <div>Everyone`&apos;s Effort Counts!.</div>
+            <div>Everyone&apos;s Effort Counts!.</div>
           </div>
           <Link to="/signup">
             <div className="btn-create-account col-6 d-grid mt-5 mx-auto">
