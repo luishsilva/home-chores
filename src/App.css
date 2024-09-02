@@ -47,6 +47,7 @@ footer {
 
 .dashboard-card {
   min-width: 500px;
+  min-height: 300px;
 }
 
 .fs-7 {
@@ -55,4 +56,13 @@ footer {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.nav-items-height {
+  width: 150px;
+}
+
+.members-card {
+  min-width: 200px;
+  max-height: 210px;
 }

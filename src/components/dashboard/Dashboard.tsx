@@ -7,9 +7,9 @@ const Dashboard = () => {
   const { members } = useAuth();
 
   return (
-    <main className="d-flex h-100 bg-light">
+    <main className="align-items-start bg-light d-flex h-100">
       <SideMenu />
-      <div className="d-flex gap-3 flex-wrap h-100 w-100 p-3">
+      <div className="d-flex flex-wrap gap-3 p-3">
         <DashboardCard cardTitle="Family/Group members" hasBtnAction>
           {members &&
             members.map((member: UserType) => (
@@ -24,7 +24,7 @@ const Dashboard = () => {
         </DashboardCard>
         <DashboardCard cardTitle="Last Chores">
           <div className="align-items-top d-flex justify-content-between">
-            <div className="d-flex row col-md-4">
+            <div className="col-md-4 d-flex row">
               <span>Make the Bed</span>
               <span className="fs-7 text-body-tertiary">Lucas</span>
             </div>
