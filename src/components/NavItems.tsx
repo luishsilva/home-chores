@@ -5,9 +5,10 @@ const NavItems = () => {
   const { logOff } = useAuth();
 
   return (
-    <div className="d-flex flex-column justify-content-between flex-grow-1">
+    <div className="d-flex flex-column justify-content-between h-100 nav-items-height align-items-center">
       <div className="d-flex flex-column">
         <Link to="/dashboard">Dashboard</Link>
+        <Link to="/members">Members</Link>
         <Link to="/add-member">Add Members</Link>
         <Link to="/chores">Chores</Link>
       </div>
