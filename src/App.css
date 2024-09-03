@@ -47,7 +47,11 @@ footer {
 
 .dashboard-card {
   min-width: 500px;
-  min-height: 300px;
+  height: 300px;
+}
+
+.card-body {
+  max-height: 220px;
 }
 
 .fs-7 {

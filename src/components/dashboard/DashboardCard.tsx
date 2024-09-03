@@ -19,7 +19,7 @@ const DashboardCard: React.FC<DashboardCardType> = ({
   return (
     <div className="border card dashboard-card">
       <div className="align-items-center card-header d-flex fw-bold justify-content-between">
-        {cardTitle}
+        <div className="card-title">{cardTitle}</div>
         {hasBtnAction && (
           <PersonAdd
             size="20"
@@ -28,7 +28,8 @@ const DashboardCard: React.FC<DashboardCardType> = ({
           />
         )}
       </div>
-      <div className="d-flex flex-column p-3">{children}</div>
+      <div className="card-body d-flex flex-column p-3">{children}</div>
+      <div className="pb-2 pe-3 align-self-end">View all</div>
     </div>
   );
 };
