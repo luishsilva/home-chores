@@ -6,13 +6,15 @@ import { UserType } from '../types/UserType';
 type UserFormType = {
   btnSubmitAction: (userData: UserType) => Promise<void>;
   isLoading: boolean;
-  members: UserType[] | null;
+  member?: UserType | null;
+  btnLabel: string | 'Save';
 };
 
 const UserForm: React.FC<UserFormType> = ({
+  btnLabel,
   btnSubmitAction,
   isLoading,
-  members,
+  member,
 }) => {
   const initialValues = {
     email: '',
@@ -25,20 +27,11 @@ const UserForm: React.FC<UserFormType> = ({
 
   const [formInputValues, setFormInputValues] = useState(initialValues);
 
-  const params = useParams();
-
   useEffect(() => {
-    if (params.memberId) {
-      const foundMember = members?.find(
-        (member) => member.id === params.memberId
-      );
-
-      if (foundMember) {
-        const { id, ...memberWithoutId } = foundMember;
-        setFormInputValues(memberWithoutId);
-      }
+    if (member) {
+      setFormInputValues(member);
     }
-  }, [members, params.memberId]);
+  }, [member]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -55,7 +48,7 @@ const UserForm: React.FC<UserFormType> = ({
     event.preventDefault();
     btnSubmitAction(formInputValues).then(() => {
       setFormInputValues(initialValues);
-      toast.success('Member added successfully');
+      toast.success('Action successfully executed.');
     });
   };
 
@@ -125,7 +118,7 @@ const UserForm: React.FC<UserFormType> = ({
         onClick={handleBtnSubmitClick}
         type="submit"
       >
-        Add Member
+        {btnLabel}
       </button>
     </form>
   );
