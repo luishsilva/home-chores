@@ -7,6 +7,7 @@ import SignUp from './components/SignUp';
 import Dashboard from './components/dashboard/Dashboard';
 import Chores from './components/Chores';
 import AddMember from './components/member/AddMember';
+import EditMember from './components/member/EditMember';
 import ListMembers from './components/member/ListMembers';
 import { AuthProvider } from './context/AuthContext';
 
@@ -23,8 +24,8 @@ const App = () => {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="chores" element={<Chores />} />
             <Route path="members" element={<ListMembers />} />
-            <Route path="members/:memberId" element={<AddMember />} />
             <Route path="add-member" element={<AddMember />} />
+            <Route path="members/:memberId" element={<EditMember />} />
           </Routes>
         </AuthProvider>
       </Router>

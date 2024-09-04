@@ -84,6 +84,7 @@ const postUserMember = async (member: UserMemberType) => {
     });
 };
 
+// Add the member un the users "table"
 const postAddMember = async (user: UserType) => {
   try {
     const response = await fetch(`${BASE_URL}/users`, {
@@ -119,9 +120,22 @@ const postAddMember = async (user: UserType) => {
   }
 };
 
+const patchMember = async (user: UserType) => {
+  return fetch(`${BASE_URL}/users/${user.id}`, {
+    body: JSON.stringify({
+      ...user,
+    }),
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then((response) => response.json);
+};
+
 const Requests = {
   getAllUsers,
   getUserGroupMembers,
+  patchMember,
   postAddMember,
   postSignUp,
   signIn,
