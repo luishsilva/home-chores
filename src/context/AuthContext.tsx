@@ -20,6 +20,7 @@ type AuthContextType = {
   signUp: (userData: UserType) => Promise<void>;
   user: UserType | null;
   members: UserType[] | null;
+  updateMember: (userData: UserType) => Promise<void>;
 };
 
 type AuthProviderType = {
@@ -43,6 +44,9 @@ export const AuthContext = createContext<AuthContextType>({
   },
   user: null,
   members: null,
+  updateMember: async (): Promise<void> => {
+    throw new Error('Function not signIn implemented');
+  },
 });
 
 export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
@@ -62,7 +66,7 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
       const usersResponse = await Requests.getAllUsers();
 
       const membersResponse = await Requests.getUserGroupMembers();
-      // Merge members user with users table
+      // Merge members with users table
       const matchingMembers = membersResponse.reduce(
         (acc: UserType[], member: UserMemberType) => {
           const membersData = usersResponse.filter(
@@ -143,6 +147,13 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
     [navigate]
   );
 
+  const logOff = useCallback(() => {
+    setUser(null);
+    setMembers(null);
+    localStorage.removeItem('currentUser');
+    navigate('/login');
+  }, [navigate]);
+
   const addMember = useCallback((userData: UserType) => {
     setIsLoading(true);
     return Requests.postAddMember(userData)
@@ -157,24 +168,31 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const logOff = useCallback(() => {
-    setUser(null);
-    setMembers(null);
-    localStorage.removeItem('currentUser');
-    navigate('/login');
-  }, [navigate]);
+  const updateMember = useCallback((userData: UserType) => {
+    setIsLoading(true);
+    return Requests.patchMember(userData)
+      .then(() => {
+        setUser(userData);
+        fetchData();
+      })
+      .catch(() => {
+        throw new Error('Sorry something went wrong, please try again later');
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
 
   const contextValue = useMemo(
     () => ({
       addMember,
       isLoading,
       logOff,
+      members,
       signIn,
       signUp,
+      updateMember,
       user,
-      members,
     }),
-    [addMember, isLoading, logOff, signIn, signUp, user, members]
+    [addMember, isLoading, logOff, members, signIn, signUp, updateMember, user]
   );
 
   return (
