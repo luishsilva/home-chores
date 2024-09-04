@@ -7,7 +7,7 @@ type DashboardCardType = {
   cardTitle: string;
   children: React.ReactNode;
   hasBtnAction?: boolean;
-  viewAllLink?: string | null;
+  viewAllLink?: { linkTo: string } | null;
 };
 
 const DashboardCard: React.FC<DashboardCardType> = ({
@@ -33,7 +33,7 @@ const DashboardCard: React.FC<DashboardCardType> = ({
       <div className="card-body d-flex flex-column p-3">{children}</div>
       {viewAllLink && (
         <div className="align-self-end pb-2 pe-3">
-          <Link to={`${viewAllLink}`}>
+          <Link to={`${viewAllLink.linkTo}`}>
             <span className="text-primary">View all</span>
           </Link>
         </div>
