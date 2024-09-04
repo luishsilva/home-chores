@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PersonAdd } from 'react-bootstrap-icons';
 
@@ -7,12 +7,14 @@ type DashboardCardType = {
   cardTitle: string;
   children: React.ReactNode;
   hasBtnAction?: boolean;
+  viewAllLink?: string | null;
 };
 
 const DashboardCard: React.FC<DashboardCardType> = ({
   cardTitle,
   children,
   hasBtnAction = false,
+  viewAllLink = null,
 }) => {
   const navigate = useNavigate();
 
@@ -29,7 +31,13 @@ const DashboardCard: React.FC<DashboardCardType> = ({
         )}
       </div>
       <div className="card-body d-flex flex-column p-3">{children}</div>
-      <div className="pb-2 pe-3 align-self-end">View all</div>
+      {viewAllLink && (
+        <div className="align-self-end pb-2 pe-3">
+          <Link to={`${viewAllLink}`}>
+            <span className="text-primary">View all</span>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
