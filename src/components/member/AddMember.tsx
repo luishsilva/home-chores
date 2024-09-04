@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import toast from 'react-hot-toast';
+import { useParams } from 'react-router-dom';
 import SideMenu from '../SideMenu';
+import UserForm from '../UserForm';
 import { useAuth } from '../../context/AuthContext';
 
 const AddMember = () => {
-  const initialValues = {
+  /*   const initialValues = {
     email: '',
     firstName: '',
     isLogged: false,
@@ -16,7 +18,21 @@ const AddMember = () => {
 
   const [formInputValues, setFormInputValues] = useState(initialValues);
 
-  const { addMember, isLoading } = useAuth();
+  const { addMember, isLoading, members } = useAuth();
+  const params = useParams();
+
+  useEffect(() => {
+    if (params.memberId) {
+      const foundMember = members?.find(
+        (member) => member.id === params.memberId
+      );
+
+      if (foundMember) {
+        const { id, ...memberWithoutId } = foundMember;
+        setFormInputValues(memberWithoutId);
+      }
+    }
+  }, [members, params.memberId]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -35,13 +51,21 @@ const AddMember = () => {
       setFormInputValues(initialValues);
       toast.success('Member added successfully');
     });
-  };
+  }; */
+  // console.log(formInputValues);
+
+  const { addMember, isLoading, members } = useAuth();
 
   return (
     <main className="d-flex h-100 bg-light">
       <SideMenu />
       <div className="d-flex flex-wrap h-100 w-100 p-3 align-items-center justify-content-center">
-        <form className="login-form col-6">
+        <UserForm
+          btnSubmitAction={addMember}
+          isLoading={isLoading}
+          members={members}
+        />
+        {/* <form className="login-form col-6">
           <div className="mb-3">
             <label className="mt-1" htmlFor="firstName">
               First name
@@ -106,7 +130,7 @@ const AddMember = () => {
           >
             Add Member
           </button>
-        </form>
+        </form> */}
       </div>
     </main>
   );
