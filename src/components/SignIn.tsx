@@ -29,10 +29,12 @@ const SignIn = () => {
 
   return (
     <div className="align-items-center d-flex flex-column login-container justify-content-center">
-      <div className="align-items-center d-flex mb-5">
-        <img className="logo" src="../../public/house-hand.png" alt="logo" />
-        <div className="ms-2">Home Chores</div>
-      </div>
+      <Link to="/">
+        <div className="align-items-center d-flex mb-5">
+          <img className="logo" src="../../public/house-hand.png" alt="logo" />
+          <div className="ms-2">Home Chores</div>
+        </div>
+      </Link>
       <form className="login-form col-12">
         <div className="mb-3">
           <input
