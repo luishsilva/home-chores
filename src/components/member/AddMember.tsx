@@ -1,136 +1,19 @@
-import { useEffect, useState } from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import toast from 'react-hot-toast';
-import { useParams } from 'react-router-dom';
 import SideMenu from '../SideMenu';
 import UserForm from '../UserForm';
 import { useAuth } from '../../context/AuthContext';
 
 const AddMember = () => {
-  /*   const initialValues = {
-    email: '',
-    firstName: '',
-    isLogged: false,
-    lastName: '',
-    password: '',
-    thumbnail: '',
-  };
-
-  const [formInputValues, setFormInputValues] = useState(initialValues);
-
-  const { addMember, isLoading, members } = useAuth();
-  const params = useParams();
-
-  useEffect(() => {
-    if (params.memberId) {
-      const foundMember = members?.find(
-        (member) => member.id === params.memberId
-      );
-
-      if (foundMember) {
-        const { id, ...memberWithoutId } = foundMember;
-        setFormInputValues(memberWithoutId);
-      }
-    }
-  }, [members, params.memberId]);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-
-    setFormInputValues((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleAddMemberClick: React.MouseEventHandler<HTMLButtonElement> = (
-    event
-  ) => {
-    event.preventDefault();
-    addMember(formInputValues).then(() => {
-      setFormInputValues(initialValues);
-      toast.success('Member added successfully');
-    });
-  }; */
-  // console.log(formInputValues);
-
-  const { addMember, isLoading, members } = useAuth();
+  const { addMember, isLoading } = useAuth();
 
   return (
     <main className="d-flex h-100 bg-light">
       <SideMenu />
-      <div className="d-flex flex-wrap h-100 w-100 p-3 align-items-center justify-content-center">
+      <div className="d-flex flex-wrap flex-column h-100 w-100 p-3 align-items-center justify-content-center">
         <UserForm
+          btnLabel="Add member"
           btnSubmitAction={addMember}
           isLoading={isLoading}
-          members={members}
         />
-        {/* <form className="login-form col-6">
-          <div className="mb-3">
-            <label className="mt-1" htmlFor="firstName">
-              First name
-            </label>
-            <input
-              className="form-control"
-              id="firstName"
-              name="firstName"
-              onChange={handleInputChange}
-              placeholder="John"
-              type="text"
-              value={formInputValues.firstName}
-            />
-          </div>
-          <div className="mb-3">
-            <label className="mt-1" htmlFor="lastName">
-              Last name
-            </label>
-            <input
-              className="form-control"
-              id="lastName"
-              name="lastName"
-              onChange={handleInputChange}
-              placeholder="Doe"
-              type="text"
-              value={formInputValues.lastName}
-            />
-          </div>
-          <div className="mb-3">
-            <label className="mt-1" htmlFor="email">
-              Email address
-            </label>
-            <input
-              className="form-control"
-              id="email"
-              name="email"
-              onChange={handleInputChange}
-              placeholder="name@example.com"
-              type="email"
-              value={formInputValues.email}
-            />
-          </div>
-          <div>
-            <label className="mt-1" htmlFor="password">
-              Password
-            </label>
-            <input
-              className="form-control mt-2"
-              id="password"
-              name="password"
-              onChange={handleInputChange}
-              placeholder="Password"
-              type="password"
-              value={formInputValues.password}
-            />
-          </div>
-          <button
-            className="btn btn-primary w-100 py-2 mb-2 mt-3"
-            disabled={isLoading}
-            onClick={handleAddMemberClick}
-            type="submit"
-          >
-            Add Member
-          </button>
-        </form> */}
       </div>
     </main>
   );
