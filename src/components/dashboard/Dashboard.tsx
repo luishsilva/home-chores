@@ -5,14 +5,19 @@ import DashboardCard from './DashboardCard';
 
 const Dashboard = () => {
   const { members } = useAuth();
+  const limitedMembers = members?.slice(0, 6);
 
   return (
     <main className="align-items-start bg-light d-flex h-100">
       <SideMenu />
       <div className="d-flex flex-wrap gap-3 p-3">
-        <DashboardCard cardTitle="Family/Group members" hasBtnAction>
-          {members &&
-            members.map((member: UserType) => (
+        <DashboardCard
+          cardTitle="Family/Group members"
+          hasBtnAction
+          viewAllLink="/members"
+        >
+          {limitedMembers &&
+            limitedMembers.map((member: UserType) => (
               <div
                 key={member.id}
                 className="align-items-center d-flex justify-content-between pb-2"
@@ -24,7 +29,7 @@ const Dashboard = () => {
         </DashboardCard>
         <DashboardCard cardTitle="Last Chores">
           <div className="align-items-top d-flex justify-content-between">
-            <div className="col-md-4 d-flex row">
+            <div className="d-flex row">
               <span>Make the Bed</span>
               <span className="fs-7 text-body-tertiary">Lucas</span>
             </div>
