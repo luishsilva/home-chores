@@ -23,6 +23,7 @@ const App = () => {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="chores" element={<Chores />} />
             <Route path="members" element={<ListMembers />} />
+            <Route path="members/:memberId" element={<AddMember />} />
             <Route path="add-member" element={<AddMember />} />
           </Routes>
         </AuthProvider>
