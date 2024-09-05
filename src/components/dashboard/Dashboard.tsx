@@ -25,7 +25,7 @@ const Dashboard = () => {
                 key={member.id}
                 className="align-items-center d-flex justify-content-between pb-2"
               >
-                <div>{member.firstName}</div>
+                <Link to={`/members/${member.id}`}>{member.firstName}</Link>
                 <div>points: 0</div>
               </div>
             ))
