@@ -24,6 +24,11 @@ const ListMembers = () => {
     }
   };
 
+  const linkAction = {
+    title: 'Add member',
+    to: '/add-member',
+  };
+
   return (
     <>
       <ConfirmModal
@@ -36,7 +41,7 @@ const ListMembers = () => {
       <main className="align-items-start bg-light d-flex h-100">
         <SideMenu />
         <div className="d-flex flex-column h-100 w-100">
-          <Header user={user} />
+          <Header user={user} linkAction={linkAction} />
           <div className="d-flex flex-wrap gap-3 p-3">
             {members &&
               members.map((member) => (
