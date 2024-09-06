@@ -9,7 +9,6 @@ const NavItems = () => {
       <div className="d-flex flex-column">
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/members">Members</Link>
-        <Link to="/add-member">Add Members</Link>
         <Link to="/chores">Chores</Link>
       </div>
       <div className="mb-3">

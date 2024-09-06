@@ -132,7 +132,14 @@ const patchMember = async (user: UserType) => {
   }).then((response) => response.json);
 };
 
+const deleteMember = async (id: string) => {
+  return fetch(`${BASE_URL}/users/${id}`, {
+    method: 'DELETE',
+  }).then((response) => response.json);
+};
+
 const Requests = {
+  deleteMember,
   getAllUsers,
   getUserGroupMembers,
   patchMember,

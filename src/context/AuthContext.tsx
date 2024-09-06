@@ -21,6 +21,7 @@ type AuthContextType = {
   user: UserType | null;
   members: UserType[] | null;
   updateMember: (userData: UserType) => Promise<void>;
+  deleteMember: (id: string) => Promise<void>;
 };
 
 type AuthProviderType = {
@@ -35,6 +36,8 @@ export const AuthContext = createContext<AuthContextType>({
     throw new Error('Function not addMember implemented.');
   },
   isLoading: false,
+  user: null,
+  members: null,
   logOff: () => {},
   signIn: async (): Promise<void> => {
     throw new Error('Function not signIn implemented');
@@ -42,10 +45,11 @@ export const AuthContext = createContext<AuthContextType>({
   signUp: async (): Promise<void> => {
     throw new Error('Function not signUp implemented.');
   },
-  user: null,
-  members: null,
   updateMember: async (): Promise<void> => {
-    throw new Error('Function not signIn implemented');
+    throw new Error('Function not updateMember implemented');
+  },
+  deleteMember: async (): Promise<void> => {
+    throw new Error('Function not deleteMember implemented');
   },
 });
 
@@ -181,9 +185,24 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
       .finally(() => setIsLoading(false));
   }, []);
 
+  const deleteMember = useCallback((id: string) => {
+    setIsLoading(true);
+    return Requests.deleteMember(id)
+      .then(() => {
+        fetchData();
+      })
+      .catch(() => {
+        throw new Error(
+          'Sorry something went wrong while trying to delete this record, please try again later'
+        );
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
+
   const contextValue = useMemo(
     () => ({
       addMember,
+      deleteMember,
       isLoading,
       logOff,
       members,
@@ -192,7 +211,17 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
       updateMember,
       user,
     }),
-    [addMember, isLoading, logOff, members, signIn, signUp, updateMember, user]
+    [
+      addMember,
+      deleteMember,
+      isLoading,
+      logOff,
+      members,
+      signIn,
+      signUp,
+      updateMember,
+      user,
+    ]
   );
 
   return (
