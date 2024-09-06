@@ -19,7 +19,7 @@ type AuthContextType = {
   signIn: (userData: UserSignInType) => Promise<void>;
   signUp: (userData: UserType) => Promise<void>;
   user: UserType | null;
-  members: UserType[] | null;
+  members: UserType[] | [];
   updateMember: (userData: UserType) => Promise<void>;
   deleteMember: (id: string) => Promise<void>;
 };
