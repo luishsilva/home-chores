@@ -6,7 +6,8 @@ import DashboardCard from './DashboardCard';
 
 const Dashboard = () => {
   const { members } = useAuth();
-  const limitedMembers = members?.slice(0, 6);
+  const reservedData = members?.reduce((acc, item) => [item, ...acc], []) || [];
+  const limitedMembers = reservedData?.slice(0, 6);
   const viewAllMembers =
     members && members?.length > 6 ? { linkTo: '/members' } : null;
 
