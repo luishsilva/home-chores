@@ -2,25 +2,29 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PencilSquare, Trash } from 'react-bootstrap-icons';
 import { useAuth } from '../../context/AuthContext';
+import { useChore } from '../../context/ChoresContext';
 import SideMenu from '../SideMenu';
 import { UserType } from '../../types/UserType';
+import { ChoresType } from '../../types/ChoresType';
 import ConfirmModal from '../ConfirmModal';
 import Header from '../Header';
 
 const Chores = () => {
-  const { deleteMember, members, user } = useAuth();
+  const { user } = useAuth();
+  const { chores } = useChore();
   const [showModal, setShowModal] = useState(false);
   const [selectedMember, setSelectedMember] = useState<UserType>();
+
   const handleClose = () => setShowModal(false);
-  const handleShow = (member: UserType) => {
+  const handleShow = (chore: ChoresType) => {
     setSelectedMember(member);
     setShowModal(true);
   };
   const handleDelete = () => {
     if (selectedMember && selectedMember.id) {
-      deleteMember(selectedMember.id).then(() => {
+      /* deleteMember(selectedMember.id).then(() => {
         setShowModal(false);
-      });
+      }); */
     }
   };
 
@@ -28,7 +32,7 @@ const Chores = () => {
     title: 'Add Chore',
     to: '/add-chore',
   };
-
+  console.log(chores);
   return (
     <>
       <ConfirmModal
@@ -43,40 +47,27 @@ const Chores = () => {
         <div className="d-flex flex-column h-100 w-100">
           <Header user={user} linkAction={linkAction} />
           <div className="d-flex flex-wrap gap-3 p-3">
-            {members &&
-              members.map((member) => (
-                <div className="d-flex" key={member.id}>
+            {chores &&
+              chores.map((chore) => (
+                <div className="d-flex" key={chore.id}>
                   <div className="card members-card">
-                    <div className="card-header">
-                      <img
-                        className="user-thumb me-2"
-                        src="default-user-thumb.png"
-                        alt="user profile thumbnail"
-                      />
-                      {member.firstName}
-                    </div>
+                    <div className="card-header">{chore.title}</div>
                     <div className="card-body">
                       <div className="d-flex justify-content-between pb-2">
-                        <div>Total tasks</div>
-                        <span className="badge text-bg-primary">4</span>
-                      </div>
-                      <div className="d-flex justify-content-between pb-2">
-                        Unfinished tasks{' '}
-                        <span className="badge text-bg-warning">4</span>
-                      </div>
-                      <div className="d-flex justify-content-between pb-2">
-                        Total points{' '}
-                        <span className="badge text-bg-success">4</span>
+                        <div>Chore value</div>
+                        <span className="badge text-bg-primary">
+                          {chore.choreValue}
+                        </span>
                       </div>
                     </div>
                     <div className="card-footer d-flex text-body-secondary">
                       <div className="ms-auto d-flex align-items-center">
-                        <Link to={`/members/${member.id}`}>
+                        <Link to={`/chores/${chore.id}`}>
                           <PencilSquare className="me-4" />
                         </Link>
                         <Trash
                           className="cursor-pointer"
-                          onClick={() => handleShow(member)}
+                          onClick={() => handleShow(chore)}
                         />
                       </div>
                     </div>
