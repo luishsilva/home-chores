@@ -1,6 +1,6 @@
 import { UserMemberType, UserSignInType, UserType } from './types/UserType';
 import { getCurrentUserId } from './functions/userLocalStorage';
-import { ChoresType } from './types/ChoresType';
+import { ChoreType } from './types/ChoresType';
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -150,8 +150,8 @@ const getAllChores = async () => {
   });
 };
 
-const postChore = async (chore: ChoresType) => {
-  const { id, ...choreWithoutId } = chore;
+const postChore = async (chore: ChoreType) => {
+  const { id, ...choreWithoutId } = chore; // ommiting chore id
   return fetch(`${BASE_URL}/chores`, {
     body: JSON.stringify({
       ...choreWithoutId,

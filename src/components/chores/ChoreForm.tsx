@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { ChoresType } from '../../types/ChoresType';
+import { ChoreType } from '../../types/ChoresType';
 import { getCurrentUserId } from '../../functions/userLocalStorage';
+import choreFrequency from '../../functions/choreFrequency';
 
 type ChoreFormType = {
-  btnSubmitAction: (choresData: ChoresType) => Promise<void>;
+  btnSubmitAction: (choresData: ChoreType) => Promise<void>;
   isLoading: boolean;
-  chores?: ChoresType | null;
+  chores?: ChoreType | null;
   btnLabel: string | 'Save';
 };
 
@@ -23,10 +24,11 @@ const ChoreForm: React.FC<ChoreFormType> = ({
     description: '',
     choreValue: 0,
     userId: id,
+    type: 0,
   };
 
   const [formInputValues, setFormInputValues] =
-    useState<ChoresType>(initialValues);
+    useState<ChoreType>(initialValues);
 
   useEffect(() => {
     if (chores) {
@@ -43,6 +45,14 @@ const ChoreForm: React.FC<ChoreFormType> = ({
     }));
   };
 
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setFormInputValues((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   const handleBtnSubmitClick: React.MouseEventHandler<HTMLButtonElement> = (
     event
   ) => {
@@ -53,10 +63,10 @@ const ChoreForm: React.FC<ChoreFormType> = ({
     });
   };
 
-  const { title, description, choreValue } = formInputValues;
+  const { title, description, choreValue, type } = formInputValues;
 
   return (
-    <form className="login-form col-6">
+    <form className="col-6 login-form">
       <div className="mb-3">
         <label className="mt-1" htmlFor="title">
           Title
@@ -92,6 +102,7 @@ const ChoreForm: React.FC<ChoreFormType> = ({
         <input
           className="form-control"
           id="choreValue"
+          min="0"
           name="choreValue"
           onChange={handleInputChange}
           placeholder="Eg.: 10"
@@ -99,8 +110,28 @@ const ChoreForm: React.FC<ChoreFormType> = ({
           value={choreValue}
         />
       </div>
+      <div className="mb-3">
+        <label className="mt-1" htmlFor="type">
+          Chore type
+        </label>
+        <select
+          className="form-control"
+          id="type"
+          name="type"
+          onChange={handleSelectChange}
+          value={type}
+        >
+          <option value="">Select chore type</option>
+          {choreFrequency &&
+            choreFrequency.map((frequency) => (
+              <option key={frequency.id} value={frequency.id}>
+                {frequency.title}
+              </option>
+            ))}
+        </select>
+      </div>
       <button
-        className="btn btn-primary w-100 py-2 mb-2 mt-3"
+        className="btn btn-primary mb-2 mt-3 py-2 w-100"
         disabled={isLoading}
         onClick={handleBtnSubmitClick}
         type="submit"

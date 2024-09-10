@@ -9,10 +9,10 @@ import {
   useCallback,
 } from 'react';
 import Requests from '../api';
-import { ChoresType } from '../types/ChoresType';
+import { ChoreType } from '../types/ChoresType';
 
 type ChoresContextType = {
-  addChore: (choreData: ChoresType) => Promise<void>;
+  addChore: (choreData: ChoreType) => Promise<void>;
   isLoading: boolean;
 };
 
@@ -31,7 +31,7 @@ export const ChoreContext = createContext<ChoresContextType>({
 });
 
 export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
-  const [chores, setChores] = useState<ChoresType[]>([]);
+  const [chores, setChores] = useState<ChoreType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchData = async () => {
@@ -47,7 +47,7 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
     fetchData();
   }, []);
 
-  const addChore = useCallback((choreData: ChoresType) => {
+  const addChore = useCallback((choreData: ChoreType) => {
     setIsLoading(true);
     return Requests.postChore(choreData)
       .then(() => {

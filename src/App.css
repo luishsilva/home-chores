@@ -46,12 +46,8 @@ footer {
 }
 
 .dashboard-card {
-  min-width: 500px;
-  height: 300px;
-}
-
-.card-body {
-  max-height: 220px;
+  min-width: 31.25rem;
+  height: 18.75rem;
 }
 
 .fs-7 {
@@ -63,9 +59,14 @@ footer {
 }
 
 .nav-items-height {
-  width: 150px;
+  width: 9.375rem;
 }
 
 .members-card {
-  min-width: 300px;
+  min-width: 18.75rem;
+}
+
+.chores-description {
+  width: 260px;
+  min-height: 100px;
 }

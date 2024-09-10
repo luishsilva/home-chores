@@ -5,9 +5,10 @@ import { useAuth } from '../../context/AuthContext';
 import { useChore } from '../../context/ChoresContext';
 import SideMenu from '../SideMenu';
 import { UserType } from '../../types/UserType';
-import { ChoresType } from '../../types/ChoresType';
+import { ChoreType } from '../../types/ChoresType';
 import ConfirmModal from '../ConfirmModal';
 import Header from '../Header';
+import choreFrequency from '../../functions/choreFrequency';
 
 const Chores = () => {
   const { user } = useAuth();
@@ -16,9 +17,9 @@ const Chores = () => {
   const [selectedMember, setSelectedMember] = useState<UserType>();
 
   const handleClose = () => setShowModal(false);
-  const handleShow = (chore: ChoresType) => {
-    setSelectedMember(member);
-    setShowModal(true);
+  const handleShow = (chore: ChoreType) => {
+    // setSelectedMember(member);
+    // setShowModal(true);
   };
   const handleDelete = () => {
     if (selectedMember && selectedMember.id) {
@@ -32,7 +33,17 @@ const Chores = () => {
     title: 'Add Chore',
     to: '/add-chore',
   };
-  console.log(chores);
+
+  const getChoreType = (choreTypeId: string) => {
+    const choreTypeFound = choreFrequency.find(
+      (item) => item.id === choreTypeId
+    );
+    return choreTypeFound;
+  };
+  const reservedData =
+    chores?.reduce((acc: ChoreType, item: ChoreType) => [item, ...acc], []) ||
+    [];
+
   return (
     <>
       <ConfirmModal
@@ -47,17 +58,33 @@ const Chores = () => {
         <div className="d-flex flex-column h-100 w-100">
           <Header user={user} linkAction={linkAction} />
           <div className="d-flex flex-wrap gap-3 p-3">
-            {chores &&
-              chores.map((chore) => (
+            {reservedData &&
+              reservedData.map((chore: ChoreType) => (
                 <div className="d-flex" key={chore.id}>
                   <div className="card members-card">
-                    <div className="card-header">{chore.title}</div>
+                    <div className="card-header fw-bold">{chore.title}</div>
                     <div className="card-body">
-                      <div className="d-flex justify-content-between pb-2">
-                        <div>Chore value</div>
-                        <span className="badge text-bg-primary">
-                          {chore.choreValue}
-                        </span>
+                      <div>
+                        <div className="d-flex pb-2">
+                          <div>Chore value:</div>
+                          <span className="badge text-bg-success ms-2">
+                            {chore.choreValue}
+                          </span>
+                        </div>
+                        <div className="p-2">
+                          <div>Description:</div>
+                          <div className="border chores-description p-2 rounded">
+                            {chore.description}
+                          </div>
+                        </div>
+                        <div className="p-2">
+                          <div>
+                            Chore type:
+                            <span className="p-2">
+                              {getChoreType(chore.type)?.title}
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div className="card-footer d-flex text-body-secondary">
