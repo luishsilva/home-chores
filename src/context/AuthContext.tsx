@@ -37,7 +37,7 @@ export const AuthContext = createContext<AuthContextType>({
   },
   isLoading: false,
   user: null,
-  members: null,
+  members: [],
   logOff: () => {},
   signIn: async (): Promise<void> => {
     throw new Error('Function not signIn implemented');
