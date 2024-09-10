@@ -1,5 +1,6 @@
 import { UserMemberType, UserSignInType, UserType } from './types/UserType';
 import { getCurrentUserId } from './functions/userLocalStorage';
+import { ChoresType } from './types/ChoresType';
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -84,7 +85,7 @@ const postUserMember = async (member: UserMemberType) => {
     });
 };
 
-// Add the member un the users "table"
+// Add the member in the users "table"
 const postAddMember = async (user: UserType) => {
   try {
     const response = await fetch(`${BASE_URL}/users`, {
@@ -138,12 +139,48 @@ const deleteMember = async (id: string) => {
   }).then((response) => response.json);
 };
 
+const getAllChores = async () => {
+  return fetch(`${BASE_URL}/chores`, {
+    method: 'GET',
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP failed with status ${response.status}`);
+    }
+    return response.json();
+  });
+};
+
+const postChore = async (chore: ChoresType) => {
+  const { id, ...choreWithoutId } = chore;
+  return fetch(`${BASE_URL}/chores`, {
+    body: JSON.stringify({
+      ...choreWithoutId,
+    }),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP failed: ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      console.error('Error posting chore to the group:', error);
+      throw error;
+    });
+};
+
 const Requests = {
   deleteMember,
+  getAllChores,
   getAllUsers,
   getUserGroupMembers,
   patchMember,
   postAddMember,
+  postChore,
   postSignUp,
   signIn,
 };

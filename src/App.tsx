@@ -10,6 +10,7 @@ import AddMember from './components/member/AddMember';
 import EditMember from './components/member/EditMember';
 import ListMembers from './components/member/ListMembers';
 import { AuthProvider } from './context/AuthContext';
+import { ChoresProvider } from './context/ChoresContext';
 import AddChore from './components/chores/AddChore';
 
 const App = () => {
@@ -17,18 +18,20 @@ const App = () => {
     <div className="app">
       <Router>
         <AuthProvider>
-          <Toaster />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="login" element={<SignIn />} />
-            <Route path="signup" element={<SignUp />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="chores" element={<Chores />} />
-            <Route path="add-chore" element={<AddChore />} />
-            <Route path="members" element={<ListMembers />} />
-            <Route path="add-member" element={<AddMember />} />
-            <Route path="members/:memberId" element={<EditMember />} />
-          </Routes>
+          <ChoresProvider>
+            <Toaster />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="login" element={<SignIn />} />
+              <Route path="signup" element={<SignUp />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="chores" element={<Chores />} />
+              <Route path="add-chore" element={<AddChore />} />
+              <Route path="members" element={<ListMembers />} />
+              <Route path="add-member" element={<AddMember />} />
+              <Route path="members/:memberId" element={<EditMember />} />
+            </Routes>
+          </ChoresProvider>
         </AuthProvider>
       </Router>
     </div>
