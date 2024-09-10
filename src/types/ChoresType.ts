@@ -6,6 +6,7 @@ const choreSchema = z.object({
   description: z.string(),
   choreValue: z.number(),
   userId: z.string(),
+  typeId: z.string(),
 });
 
-export type ChoresType = z.infer<typeof choreSchema>;
+export type ChoreType = z.infer<typeof choreSchema>;
