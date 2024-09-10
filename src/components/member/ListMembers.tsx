@@ -44,10 +44,10 @@ const ListMembers = () => {
           <Header user={user} linkAction={linkAction} />
           <div className="d-flex flex-wrap gap-3 p-3">
             {members &&
-              members.map((member) => (
+              members.map((member: UserType) => (
                 <div className="d-flex" key={member.id}>
                   <div className="card members-card">
-                    <div className="card-header">
+                    <div className="card-header fw-bold">
                       <img
                         className="user-thumb me-2"
                         src="default-user-thumb.png"
