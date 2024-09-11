@@ -16,9 +16,9 @@ const getAllUsers = () => {
 };
 
 const getUserGroupMembers = () => {
-  const { id } = getCurrentUserId();
+  const { id: currentUserId } = getCurrentUserId();
 
-  return fetch(`${BASE_URL}/user_members?groupOwnerId=${id}`, {
+  return fetch(`${BASE_URL}/user_members?groupOwnerId=${currentUserId}`, {
     method: 'GET',
   }).then((response) => {
     if (!response.ok) {
@@ -139,8 +139,8 @@ const deleteMember = async (id: string) => {
   }).then((response) => response.json);
 };
 
-const getAllChores = async () => {
-  return fetch(`${BASE_URL}/chores`, {
+const getAllChores = async (userId: string) => {
+  return fetch(`${BASE_URL}/chores?userId=${userId}`, {
     method: 'GET',
   }).then((response) => {
     if (!response.ok) {

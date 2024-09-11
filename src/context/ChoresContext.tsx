@@ -10,6 +10,7 @@ import {
 } from 'react';
 import Requests from '../api';
 import { ChoreType } from '../types/ChoresType';
+import { useAuth } from './AuthContext';
 
 type ChoresContextType = {
   addChore: (choreData: ChoreType) => Promise<void>;
@@ -33,19 +34,22 @@ export const ChoreContext = createContext<ChoresContextType>({
 export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
   const [chores, setChores] = useState<ChoreType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { user } = useAuth();
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    if (!user?.id) return;
+
     try {
-      const choresResponse = await Requests.getAllChores();
+      const choresResponse = await Requests.getAllChores(user.id);
       setChores(choresResponse);
     } catch (error) {
       throw new Error(`Error fetching data: ${error}`);
     }
-  };
+  }, [user?.id]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData, user?.id]);
 
   const addChore = useCallback((choreData: ChoreType) => {
     setIsLoading(true);

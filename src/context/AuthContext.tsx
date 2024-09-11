@@ -71,7 +71,7 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
 
       const membersResponse = await Requests.getUserGroupMembers();
       // Merge members with users table
-      const matchingMembers = membersResponse.reduce(
+      const matchingUserMembers = membersResponse.reduce(
         (acc: UserType[], member: UserMemberType) => {
           const membersData = usersResponse.filter(
             (userList: UserType) => userList?.id === member?.userId
@@ -81,7 +81,7 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
         []
       );
 
-      setMembers(matchingMembers);
+      setMembers(matchingUserMembers);
     } catch (error) {
       throw new Error(`Error fetching data:${error}`);
     }
