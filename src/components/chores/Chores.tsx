@@ -4,7 +4,6 @@ import { PencilSquare, Trash } from 'react-bootstrap-icons';
 import { useAuth } from '../../context/AuthContext';
 import { useChore } from '../../context/ChoresContext';
 import SideMenu from '../SideMenu';
-import { UserType } from '../../types/UserType';
 import { ChoreType } from '../../types/ChoresType';
 import ConfirmModal from '../ConfirmModal';
 import Header from '../Header';
@@ -12,20 +11,20 @@ import choreFrequency from '../../functions/choreFrequency';
 
 const Chores = () => {
   const { user } = useAuth();
-  const { chores } = useChore();
+  const { chores, deleteChore } = useChore();
   const [showModal, setShowModal] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<UserType>();
+  const [selectedChore, setSelectedChore] = useState<ChoreType>();
 
   const handleClose = () => setShowModal(false);
   const handleShow = (chore: ChoreType) => {
-    // setSelectedMember(member);
-    // setShowModal(true);
+    setSelectedChore(chore);
+    setShowModal(true);
   };
   const handleDelete = () => {
-    if (selectedMember && selectedMember.id) {
-      /* deleteMember(selectedMember.id).then(() => {
+    if (selectedChore && selectedChore.id) {
+      deleteChore(selectedChore.id).then(() => {
         setShowModal(false);
-      }); */
+      });
     }
   };
 
@@ -50,8 +49,8 @@ const Chores = () => {
         handleClose={handleClose}
         handleConfirm={handleDelete}
         show={showModal}
-        text={`Are you sure you want to delete the ${selectedMember?.firstName.toLocaleUpperCase()} from this group?`}
-        title="Delete Member"
+        text={`Are you sure you want to delete the ${selectedChore?.title.toLocaleUpperCase()} ?`}
+        title="Delete Chore"
       />
       <main className="align-items-start bg-light d-flex h-100">
         <SideMenu />
@@ -89,7 +88,7 @@ const Chores = () => {
                     </div>
                     <div className="card-footer d-flex text-body-secondary">
                       <div className="ms-auto d-flex align-items-center">
-                        <Link to={`/chores/${chore.id}`}>
+                        <Link to={`/chore/${chore.id}`}>
                           <PencilSquare className="me-4" />
                         </Link>
                         <Trash

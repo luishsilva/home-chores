@@ -12,6 +12,7 @@ import ListMembers from './components/member/ListMembers';
 import { AuthProvider } from './context/AuthContext';
 import { ChoresProvider } from './context/ChoresContext';
 import AddChore from './components/chores/AddChore';
+import EditChore from './components/chores/EditChore';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
               <Route path="signup" element={<SignUp />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="chores" element={<Chores />} />
+              <Route path="chore/:choreId" element={<EditChore />} />
               <Route path="add-chore" element={<AddChore />} />
               <Route path="members" element={<ListMembers />} />
               <Route path="add-member" element={<AddMember />} />

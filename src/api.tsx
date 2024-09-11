@@ -173,16 +173,39 @@ const postChore = async (chore: ChoreType) => {
     });
 };
 
+const patchChore = async (chore: ChoreType) => {
+  return fetch(`${BASE_URL}/chores/${chore.id}`, {
+    body: JSON.stringify({
+      ...chore,
+    }),
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then((response) => response.json);
+};
+
+const deleteChore = async (id: string) => {
+  return fetch(`${BASE_URL}/chores/${id}`, {
+    method: 'DELETE',
+  }).then((response) => response.json);
+};
+
 const Requests = {
+  // User
   deleteMember,
-  getAllChores,
   getAllUsers,
   getUserGroupMembers,
   patchMember,
   postAddMember,
-  postChore,
   postSignUp,
   signIn,
+
+  // Chore
+  deleteChore,
+  getAllChores,
+  patchChore,
+  postChore,
 };
 
 export default Requests;

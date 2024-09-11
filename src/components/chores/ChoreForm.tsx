@@ -7,7 +7,7 @@ import choreFrequency from '../../functions/choreFrequency';
 type ChoreFormType = {
   btnSubmitAction: (choresData: ChoreType) => Promise<void>;
   isLoading: boolean;
-  chores?: ChoreType | null;
+  chore?: ChoreType | null;
   btnLabel: string | 'Save';
 };
 
@@ -15,7 +15,7 @@ const ChoreForm: React.FC<ChoreFormType> = ({
   btnLabel,
   btnSubmitAction,
   isLoading,
-  chores,
+  chore,
 }) => {
   const { id } = getCurrentUserId();
   const initialValues = {
@@ -31,10 +31,10 @@ const ChoreForm: React.FC<ChoreFormType> = ({
     useState<ChoreType>(initialValues);
 
   useEffect(() => {
-    if (chores) {
-      setFormInputValues(chores);
+    if (chore) {
+      setFormInputValues(chore);
     }
-  }, [chores]);
+  }, [chore]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
