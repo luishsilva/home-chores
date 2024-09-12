@@ -49,8 +49,8 @@ const Dashboard = () => {
             <div>Value: 1</div>
           </div>
         </DashboardCard>
-        <DashboardCard cardTitle="Finished Chores"> </DashboardCard>
         <DashboardCard cardTitle="Needs approval"> </DashboardCard>
+        <DashboardCard cardTitle="Finished Chores"> </DashboardCard>
       </div>
     </main>
   );
