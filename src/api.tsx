@@ -194,25 +194,27 @@ const deleteChore = async (id: string) => {
 };
 
 const postChoreMember = async (ChoreMember: ChoreMemberType) => {
-  const {
-    id,
-    ...choreMemberDataWithoutId // Spread the rest of the properties
-  } = ChoreMember;
+  const { id, ...choreMemberDataWithoutId } = ChoreMember;
+  choreMemberDataWithoutId.choreStatus = '1';
 
-  const newChoreMemberData = {
-    ...choreMemberDataWithoutId,
-    choreStatus: 1,
-  };
-  console.log(newChoreMemberData);
-  /* return fetch(`${BASE_URL}/chore_members`, {
+  return fetch(`${BASE_URL}/chore_members`, {
     body: JSON.stringify({
-      ...MemberChore,
+      ...choreMemberDataWithoutId,
     }),
-    method: ' POST',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-  }); */
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP failed: ${response.statusText}`);
+      }
+    })
+    .catch((error) => {
+      console.error('Error posting chore to the group:', error);
+      throw error;
+    });
 };
 
 const Requests = {
