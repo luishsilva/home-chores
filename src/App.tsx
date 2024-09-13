@@ -14,6 +14,7 @@ import { ChoresProvider } from './context/ChoresContext';
 import AddChore from './components/chores/AddChore';
 import EditChore from './components/chores/EditChore';
 import AssignChore from './components/chores/AssignChore';
+import ChoreMembers from './components/chores/ChoreMembers';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
               <Route path="chore/:choreId" element={<EditChore />} />
               <Route path="add-chore" element={<AddChore />} />
               <Route path="/assign-chore" element={<AssignChore />} />
+              <Route path="/chores-members" element={<ChoreMembers />} />
               <Route path="members" element={<ListMembers />} />
               <Route path="add-member" element={<AddMember />} />
               <Route path="members/:memberId" element={<EditMember />} />

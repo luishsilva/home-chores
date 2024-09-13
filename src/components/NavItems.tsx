@@ -10,6 +10,7 @@ const NavItems = () => {
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/members">Members</Link>
         <Link to="/chores">Chores</Link>
+        <Link to="/chores-members">Chores/Members</Link>
       </div>
       <div className="mb-3">
         <button type="button" onClick={logOff}>
