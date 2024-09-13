@@ -11,9 +11,11 @@ import {
 import Requests from '../api';
 import { ChoreType } from '../types/ChoresType';
 import { useAuth } from './AuthContext';
+import { ChoreMemberType } from '../types/ChoreMembersType';
 
 type ChoresContextType = {
   addChore: (choreData: ChoreType) => Promise<void>;
+  addChoreMember: (choreMember: ChoreMemberType) => Promise<void>;
   chores: ChoreType[] | [];
   deleteChore: (id: string) => Promise<void>;
   updateChore: (choreData: ChoreType) => Promise<void>;
@@ -31,9 +33,12 @@ export const ChoreContext = createContext<ChoresContextType>({
   addChore: async (): Promise<void> => {
     throw new Error('Function addChore not implemented.');
   },
+  addChoreMember: async (): Promise<void> => {
+    throw new Error('Function addChoreMember not implemented.');
+  },
   chores: [],
   deleteChore: async (): Promise<void> => {
-    throw new Error('Function addChore not implemented.');
+    throw new Error('Function deleteChore not implemented.');
   },
   isLoading: false,
   updateChore: async (): Promise<void> => {
@@ -46,6 +51,7 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useAuth();
   const [chore, setChore] = useState<ChoreType>();
+  const [choreMember, setChoreMember] = useState<ChoreMemberType>();
 
   const fetchData = useCallback(async () => {
     if (!user?.id) return;
@@ -111,15 +117,32 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
     [fetchData]
   );
 
+  const addChoreMember = useCallback(
+    (choreMemberData: ChoreMemberType) => {
+      setIsLoading(true);
+      return Requests.postChoreMember(choreMemberData)
+        .then(() => {
+          setChoreMember(choreMemberData);
+          fetchData();
+        })
+        .catch(() => {
+          throw new Error('Sorry something went wrong, please try again later');
+        })
+        .finally(() => setIsLoading(false));
+    },
+    [fetchData]
+  );
+
   const contextValue = useMemo(
     () => ({
       addChore,
+      addChoreMember,
       chores,
       deleteChore,
       isLoading,
       updateChore,
     }),
-    [addChore, chores, deleteChore, isLoading, updateChore]
+    [addChore, addChoreMember, chores, deleteChore, isLoading, updateChore]
   );
 
   return (

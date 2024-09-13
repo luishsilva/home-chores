@@ -1,6 +1,7 @@
 import { UserMemberType, UserSignInType, UserType } from './types/UserType';
 import { getCurrentUserId } from './functions/userLocalStorage';
 import { ChoreType } from './types/ChoresType';
+import { ChoreMemberType } from './types/ChoreMembersType';
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -139,6 +140,7 @@ const deleteMember = async (id: string) => {
   }).then((response) => response.json);
 };
 
+// Chores API calls
 const getAllChores = async (userId: string) => {
   return fetch(`${BASE_URL}/chores?userId=${userId}`, {
     method: 'GET',
@@ -191,6 +193,28 @@ const deleteChore = async (id: string) => {
   }).then((response) => response.json);
 };
 
+const postChoreMember = async (ChoreMember: ChoreMemberType) => {
+  const {
+    id,
+    ...choreMemberDataWithoutId // Spread the rest of the properties
+  } = ChoreMember;
+
+  const newChoreMemberData = {
+    ...choreMemberDataWithoutId,
+    choreStatus: 1,
+  };
+  console.log(newChoreMemberData);
+  /* return fetch(`${BASE_URL}/chore_members`, {
+    body: JSON.stringify({
+      ...MemberChore,
+    }),
+    method: ' POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }); */
+};
+
 const Requests = {
   // User
   deleteMember,
@@ -204,6 +228,7 @@ const Requests = {
   // Chore
   deleteChore,
   getAllChores,
+  postChoreMember,
   patchChore,
   postChore,
 };

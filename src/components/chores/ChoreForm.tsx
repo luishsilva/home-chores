@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { ChoreType } from '../../types/ChoresType';
 import { getCurrentUserId } from '../../functions/userLocalStorage';
-import choreFrequency from '../../functions/choreFrequency';
+import { choreFrequency } from '../../functions/choreConstants';
 
 type ChoreFormType = {
   btnSubmitAction: (choresData: ChoreType) => Promise<void>;
@@ -24,7 +24,7 @@ const ChoreForm: React.FC<ChoreFormType> = ({
     description: '',
     choreValue: 0,
     userId: id,
-    type: 0,
+    typeId: '',
   };
 
   const [formInputValues, setFormInputValues] =
@@ -63,7 +63,7 @@ const ChoreForm: React.FC<ChoreFormType> = ({
     });
   };
 
-  const { title, description, choreValue, type } = formInputValues;
+  const { title, description, choreValue, typeId } = formInputValues;
 
   return (
     <form className="col-6 login-form">
@@ -111,15 +111,15 @@ const ChoreForm: React.FC<ChoreFormType> = ({
         />
       </div>
       <div className="mb-3">
-        <label className="mt-1" htmlFor="type">
+        <label className="mt-1" htmlFor="typeId">
           Chore type
         </label>
         <select
           className="form-control"
-          id="type"
-          name="type"
+          id="typeId"
+          name="typeId"
           onChange={handleSelectChange}
-          value={type}
+          value={typeId}
         >
           <option value="">Select chore type</option>
           {choreFrequency &&
