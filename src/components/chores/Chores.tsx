@@ -7,7 +7,7 @@ import SideMenu from '../SideMenu';
 import { ChoreType } from '../../types/ChoresType';
 import ConfirmModal from '../ConfirmModal';
 import Header from '../Header';
-import choreFrequency from '../../functions/choreFrequency';
+import { choreFrequency } from '../../functions/choreConstants';
 
 const Chores = () => {
   const { user } = useAuth();
@@ -28,11 +28,6 @@ const Chores = () => {
     }
   };
 
-  const linkAction = {
-    title: 'Add Chore',
-    to: '/add-chore',
-  };
-
   const getChoreType = (choreTypeId: string) => {
     const choreTypeFound = choreFrequency.find(
       (item) => item.id === choreTypeId
@@ -40,7 +35,7 @@ const Chores = () => {
     return choreTypeFound;
   };
   const reservedData =
-    chores?.reduce((acc: ChoreType, item: ChoreType) => [item, ...acc], []) ||
+    chores?.reduce((acc: ChoreType[], item: ChoreType) => [item, ...acc], []) ||
     [];
 
   return (
@@ -49,13 +44,22 @@ const Chores = () => {
         handleClose={handleClose}
         handleConfirm={handleDelete}
         show={showModal}
-        text={`Are you sure you want to delete the ${selectedChore?.title.toLocaleUpperCase()} ?`}
+        text={`Are you sure you want to delete the ${selectedChore?.title.toUpperCase()} ?`}
         title="Delete Chore"
       />
       <main className="align-items-start bg-light d-flex h-100">
         <SideMenu />
         <div className="d-flex flex-column h-100 w-100">
-          <Header user={user} linkAction={linkAction} />
+          <Header user={user}>
+            <div>
+              <Link className="btn btn-primary" to="/add-chore">
+                Add Chore
+              </Link>
+              <Link className="btn btn-primary ms-2" to="/assign-chore">
+                Assign Chore to a member
+              </Link>
+            </div>
+          </Header>
           <div className="d-flex flex-wrap gap-3 p-3">
             {reservedData &&
               reservedData.map((chore: ChoreType) => (
@@ -80,7 +84,7 @@ const Chores = () => {
                           <div>
                             Chore type:
                             <span className="p-2">
-                              {getChoreType(chore.type)?.title}
+                              {getChoreType(chore.typeId)?.title}
                             </span>
                           </div>
                         </div>
