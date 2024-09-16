@@ -40,26 +40,6 @@ const AssignChore = () => {
         <form className="login-form col-6">
           <div className="mb-3">
             <label className="mt-1" htmlFor="firstName">
-              Chore
-            </label>
-            <select
-              className="form-control"
-              id="choreId"
-              name="choreId"
-              onChange={handleSelectChange}
-              value={choreId}
-            >
-              <option value="">Select chore type</option>
-              {chores &&
-                chores.map((chore) => (
-                  <option key={chore.id} value={chore.id}>
-                    {chore.title}
-                  </option>
-                ))}
-            </select>
-          </div>
-          <div className="mb-3">
-            <label className="mt-1" htmlFor="firstName">
               Member
             </label>
             <select
@@ -74,6 +54,26 @@ const AssignChore = () => {
                 members.map((member) => (
                   <option key={member.id} value={member.id}>
                     {member.firstName}
+                  </option>
+                ))}
+            </select>
+          </div>
+          <div className="mb-3">
+            <label className="mt-1" htmlFor="firstName">
+              Chore
+            </label>
+            <select
+              className="form-control"
+              id="choreId"
+              name="choreId"
+              onChange={handleSelectChange}
+              value={choreId}
+            >
+              <option value="">Select chore type</option>
+              {chores &&
+                chores.map((chore) => (
+                  <option key={chore.id} value={chore.id}>
+                    {chore.title}
                   </option>
                 ))}
             </select>

@@ -217,6 +217,17 @@ const postChoreMember = async (ChoreMember: ChoreMemberType) => {
     });
 };
 
+const getAllChoreMembers = async () => {
+  return fetch(`${BASE_URL}/chore_members`, {
+    method: 'GET',
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP failed with status ${response.status}`);
+    }
+    return response.json();
+  });
+};
+
 const Requests = {
   // User
   deleteMember,
@@ -230,6 +241,7 @@ const Requests = {
   // Chore
   deleteChore,
   getAllChores,
+  getAllChoreMembers,
   postChoreMember,
   patchChore,
   postChore,

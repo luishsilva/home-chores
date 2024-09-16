@@ -17,6 +17,7 @@ type ChoresContextType = {
   addChore: (choreData: ChoreType) => Promise<void>;
   addChoreMember: (choreMember: ChoreMemberType) => Promise<void>;
   chores: ChoreType[] | [];
+  choreMembers: ChoreMemberType[] | [];
   deleteChore: (id: string) => Promise<void>;
   updateChore: (choreData: ChoreType) => Promise<void>;
   isLoading: boolean;
@@ -37,6 +38,7 @@ export const ChoreContext = createContext<ChoresContextType>({
     throw new Error('Function addChoreMember not implemented.');
   },
   chores: [],
+  choreMembers: [],
   deleteChore: async (): Promise<void> => {
     throw new Error('Function deleteChore not implemented.');
   },
@@ -52,6 +54,8 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
   const { user } = useAuth();
   const [chore, setChore] = useState<ChoreType>();
   const [choreMember, setChoreMember] = useState<ChoreMemberType>();
+  // list all chores
+  const [choreMembers, setChoreMembers] = useState<ChoreMemberType[]>();
 
   const fetchData = useCallback(async () => {
     if (!user?.id) return;
@@ -67,6 +71,19 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
   useEffect(() => {
     fetchData();
   }, [fetchData, user?.id]);
+
+  const fetchChoreMembersData = useCallback(async () => {
+    try {
+      const choresResponse = await Requests.getAllChoreMembers();
+      setChoreMembers(choresResponse);
+    } catch (error) {
+      throw new Error(`Error fetching data: ${error}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchChoreMembersData();
+  }, [fetchChoreMembersData]);
 
   const addChore = useCallback(
     (choreData: ChoreType) => {
@@ -138,11 +155,20 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
       addChore,
       addChoreMember,
       chores,
+      choreMembers,
       deleteChore,
       isLoading,
       updateChore,
     }),
-    [addChore, addChoreMember, chores, deleteChore, isLoading, updateChore]
+    [
+      addChore,
+      addChoreMember,
+      chores,
+      choreMembers,
+      deleteChore,
+      isLoading,
+      updateChore,
+    ]
   );
 
   return (

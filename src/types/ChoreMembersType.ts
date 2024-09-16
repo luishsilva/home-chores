@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const choreMembersSchema = z.object({
   id: z.string(),
-  choreId: z.number(),
+  choreId: z.string(),
   choreStatus: z.string(),
   memberId: z.string(),
 });

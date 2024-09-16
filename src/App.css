@@ -68,5 +68,6 @@ footer {
 
 .chores-description {
   width: 260px;
-  min-height: 100px;
+  height: 150px;
+  overflow-y: auto;
 }
