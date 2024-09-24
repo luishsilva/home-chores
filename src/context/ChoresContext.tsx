@@ -9,9 +9,8 @@ import {
   useCallback,
 } from 'react';
 import Requests from '../api';
-import { ChoreType } from '../types/ChoresType';
+import { ChoreType, ChoreMemberType } from '../types/ChoresType';
 import { useAuth } from './AuthContext';
-import { ChoreMemberType } from '../types/ChoreMembersType';
 
 type ChoresContextType = {
   addChore: (choreData: ChoreType) => Promise<void>;
@@ -21,6 +20,10 @@ type ChoresContextType = {
   deleteChore: (id: string) => Promise<void>;
   updateChore: (choreData: ChoreType) => Promise<void>;
   isLoading: boolean;
+  updateChoreMemberStatus: (
+    status: string,
+    choreMemberId: string
+  ) => Promise<void>;
 };
 
 type ChoreProviderType = {
@@ -46,6 +49,9 @@ export const ChoreContext = createContext<ChoresContextType>({
   updateChore: async (): Promise<void> => {
     throw new Error('Function updateChore not implemented.');
   },
+  updateChoreMemberStatus: async (): Promise<void> => {
+    throw new Error('Function updateChoreMemberStatus not implemented.');
+  },
 });
 
 export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
@@ -53,9 +59,10 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useAuth();
   const [chore, setChore] = useState<ChoreType>();
-  const [choreMember, setChoreMember] = useState<ChoreMemberType>();
+  const [choreMember, setChoreMember] = useState<ChoreMemberType | undefined>();
+
   // list all chores
-  const [choreMembers, setChoreMembers] = useState<ChoreMemberType[]>();
+  const [choreMembers, setChoreMembers] = useState<ChoreMemberType[]>([]);
 
   const fetchData = useCallback(async () => {
     if (!user?.id) return;
@@ -73,13 +80,17 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
   }, [fetchData, user?.id]);
 
   const fetchChoreMembersData = useCallback(async () => {
+    if (!user?.id) {
+      throw new Error('User ID is not available');
+    }
+
     try {
-      const choresResponse = await Requests.getAllChoreMembers();
-      setChoreMembers(choresResponse);
+      const choresData = await Requests.getAllChoreMembers(user?.id);
+      setChoreMembers(choresData);
     } catch (error) {
       throw new Error(`Error fetching data: ${error}`);
     }
-  }, []);
+  }, [user?.id]);
 
   useEffect(() => {
     fetchChoreMembersData();
@@ -136,8 +147,13 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
 
   const addChoreMember = useCallback(
     (choreMemberData: ChoreMemberType) => {
+      if (!user?.id) {
+        throw new Error('User ID is not available');
+      }
+
       setIsLoading(true);
-      return Requests.postChoreMember(choreMemberData)
+      const userId = user?.id;
+      return Requests.postChoreMember(choreMemberData, userId)
         .then(() => {
           setChoreMember(choreMemberData);
           fetchData();
@@ -147,7 +163,25 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
         })
         .finally(() => setIsLoading(false));
     },
-    [fetchData]
+    [fetchData, setChoreMember, user?.id]
+  );
+
+  const updateChoreMemberStatus = useCallback(
+    (status: string, choreMemberId: string) => {
+      setIsLoading(true);
+      return Requests.patchChoreMemberStatus(status, choreMemberId, user?.id)
+        .then(() => {
+          fetchChoreMembersData();
+          setChoreMembers(choreMembers);
+        })
+        .catch(() => {
+          throw new Error(
+            'Sorry, something went wrong, please try again later.'
+          );
+        })
+        .finally(() => setIsLoading(false));
+    },
+    [choreMembers, fetchChoreMembersData, user?.id]
   );
 
   const contextValue = useMemo(
@@ -159,6 +193,7 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
       deleteChore,
       isLoading,
       updateChore,
+      updateChoreMemberStatus,
     }),
     [
       addChore,
@@ -168,6 +203,7 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
       deleteChore,
       isLoading,
       updateChore,
+      updateChoreMemberStatus,
     ]
   );
 

@@ -28,7 +28,6 @@ const AssignChore = () => {
   ) => {
     event.preventDefault();
     addChoreMember(formInputValues);
-    // console.log(formInputValues);
   };
 
   const { choreId, memberId } = formInputValues;

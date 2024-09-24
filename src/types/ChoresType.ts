@@ -10,3 +10,20 @@ const choreSchema = z.object({
 });
 
 export type ChoreType = z.infer<typeof choreSchema>;
+
+const choreMembersSchema = z.object({
+  id: z.string(),
+  choreId: z.string(),
+  choreStatus: z.string(),
+  memberId: z.string(),
+  groupOwnerId: z.string(),
+});
+
+export type ChoreMemberType = z.infer<typeof choreMembersSchema>;
+
+const choreStatusSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+});
+
+export type ChoreStatus = z.infer<typeof choreStatusSchema>;

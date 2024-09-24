@@ -29,7 +29,7 @@ type AuthProviderType = {
 };
 
 /**
- * ensures that the context has a default value that matches the expected shape (AuthContextType)
+ * ensures that the context has a default value that matches the expected (AuthContextType)
  */
 export const AuthContext = createContext<AuthContextType>({
   addMember: async (): Promise<void> => {

@@ -8,7 +8,7 @@ import { choreFrequency, choreStatus } from '../../functions/choreConstants';
 
 const ChoreMembers = () => {
   const { user, members } = useAuth();
-  const { chores, choreMembers } = useChore();
+  const { chores, choreMembers, updateChoreMemberStatus } = useChore();
 
   const choreFound = (choreId: string) => {
     return chores?.find((chore) => chore.id === choreId);
@@ -22,6 +22,14 @@ const ChoreMembers = () => {
     return choreFrequency.find((frequencyType) => frequencyType.id === typeId);
   };
 
+  const handleSelectChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    choreMemberId: string
+  ) => {
+    const { value } = event.target;
+    const [statusId] = value.split('-');
+    updateChoreMemberStatus(statusId, choreMemberId);
+  };
   return (
     <main className="align-items-start bg-light d-flex h-100">
       <SideMenu />
@@ -34,7 +42,7 @@ const ChoreMembers = () => {
         <div className="d-flex flex-wrap gap-3 p-3">
           {choreMembers &&
             choreMembers.map((choreMember) => (
-              <div className="d-flex" key={choreMember.choreId}>
+              <div className="d-flex" key={choreMember.id}>
                 <div className="card members-card">
                   <div className="d-flex justify-content-between card-header fw-bold">
                     {choreFound(choreMember.choreId)?.title}
@@ -51,7 +59,9 @@ const ChoreMembers = () => {
                           src="default-user-thumb.png"
                           alt="user profile thumbnail"
                         />
-                        {memberFound(choreMember.memberId)?.firstName}
+                        <span className="fw-bold">
+                          {memberFound(choreMember.memberId)?.firstName}
+                        </span>
                       </div>
                     </div>
                     <div className="d-flex flex-column pb-2">
@@ -63,29 +73,27 @@ const ChoreMembers = () => {
                     <div className="d-flex justify-content-between pb-2">
                       Frequency:{' '}
                       {
-                        frequencyFound(choreFound(choreMember.choreId)?.typeId)
-                          ?.title
+                        frequencyFound(
+                          choreFound(choreMember.choreId)?.typeId ?? ''
+                        )?.title
                       }
                     </div>
                     <div className="mb-3">
-                      <label className="mt-1" htmlFor="typeId">
+                      <label className="mt-1" htmlFor="choreStatus">
                         Chore status
                       </label>
                       <select
                         className="form-control"
-                        id="typeId"
-                        name="typeId"
-                        // onChange={handleSelectChange}
+                        id="choreStatus"
+                        name="choreStatus"
+                        onChange={(e) => handleSelectChange(e, choreMember.id)}
                         value={choreMember.choreStatus}
                       >
                         <option value="">Select chore status</option>
                         {choreStatus &&
                           choreStatus.map((status) => (
-                            <option
-                              key={status.id}
-                              value={choreMember.choreStatus}
-                            >
-                              {`${status.title} ${choreMember.choreStatus}`}
+                            <option key={status.id} value={status.id}>
+                              {status.title}
                             </option>
                           ))}
                       </select>
