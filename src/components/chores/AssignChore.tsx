@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useChore } from '../../context/ChoresContext';
 import { useAuth } from '../../context/AuthContext';
 import SideMenu from '../SideMenu';
@@ -9,6 +10,7 @@ const AssignChore = () => {
     memberId: '',
     choreId: '',
     choreStatus: '',
+    groupOwnerId: '',
   };
 
   const [formInputValues, setFormInputValues] = useState(initialValues);
@@ -27,7 +29,9 @@ const AssignChore = () => {
     event
   ) => {
     event.preventDefault();
-    addChoreMember(formInputValues);
+    addChoreMember(formInputValues).then(() =>
+      toast.success('Chore assigned successfully')
+    );
   };
 
   const { choreId, memberId } = formInputValues;

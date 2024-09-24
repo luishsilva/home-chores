@@ -80,13 +80,11 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
   }, [fetchData, user?.id]);
 
   const fetchChoreMembersData = useCallback(async () => {
-    if (!user?.id) {
-      throw new Error('User ID is not available');
-    }
-
     try {
-      const choresData = await Requests.getAllChoreMembers(user?.id);
-      setChoreMembers(choresData);
+      if (user?.id) {
+        const choresData = await Requests.getAllChoreMembers(user?.id);
+        setChoreMembers(choresData);
+      }
     } catch (error) {
       throw new Error(`Error fetching data: ${error}`);
     }
@@ -147,23 +145,23 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
 
   const addChoreMember = useCallback(
     (choreMemberData: ChoreMemberType) => {
-      if (!user?.id) {
-        throw new Error('User ID is not available');
+      if (user?.id) {
+        setIsLoading(true);
+        return Requests.postChoreMember(choreMemberData, user?.id)
+          .then(() => {
+            setChoreMember(choreMemberData);
+            fetchChoreMembersData();
+          })
+          .catch(() => {
+            throw new Error(
+              'Sorry something went wrong, please try again later'
+            );
+          })
+          .finally(() => setIsLoading(false));
       }
-
-      setIsLoading(true);
-      const userId = user?.id;
-      return Requests.postChoreMember(choreMemberData, userId)
-        .then(() => {
-          setChoreMember(choreMemberData);
-          fetchData();
-        })
-        .catch(() => {
-          throw new Error('Sorry something went wrong, please try again later');
-        })
-        .finally(() => setIsLoading(false));
+      return Promise.resolve();
     },
-    [fetchData, setChoreMember, user?.id]
+    [fetchChoreMembersData, setChoreMember, user?.id]
   );
 
   const updateChoreMemberStatus = useCallback(
