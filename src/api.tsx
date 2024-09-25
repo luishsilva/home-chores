@@ -192,6 +192,7 @@ const deleteChore = async (id: string) => {
   }).then((response) => response.json);
 };
 
+// chores members API calls
 const postChoreMember = async (
   ChoreMember: ChoreMemberType,
   userId: string
@@ -252,6 +253,12 @@ const patchChoreMemberStatus = async (
   });
 };
 
+const deleteChoreMembers = async (id: string) => {
+  return fetch(`${BASE_URL}/chore_members/${id}`, {
+    method: 'DELETE',
+  }).then((response) => response.json);
+};
+
 const Requests = {
   // User
   deleteMember,
@@ -265,6 +272,9 @@ const Requests = {
   // Chore
   deleteChore,
   getAllChores,
+
+  // Chore Members
+  deleteChoreMembers,
   getAllChoreMembers,
   postChoreMember,
   patchChore,
