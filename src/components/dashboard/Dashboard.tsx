@@ -1,15 +1,37 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useChore } from '../../context/ChoresContext';
 import { UserType } from '../../types/UserType';
 import SideMenu from '../SideMenu';
 import DashboardCard from './DashboardCard';
+import { findChoreById, findChoreFrequencyById } from '../../functions/chores';
+import { findMemberById, membersPoints } from '../../functions/members';
+import choreMembersByStatus from '../../functions/choreMembers';
+import { ChoreMemberType } from '../../types/ChoresType';
 
 const Dashboard = () => {
   const { members } = useAuth();
-  const reservedData = members?.reduce((acc, item) => [item, ...acc], []) || [];
-  const limitedMembers = reservedData?.slice(0, 6);
+  const { chores, choreMembers } = useChore();
+  const reservedMembersData =
+    members?.reduce((acc, item) => [item, ...acc], []) || [];
+  const limitedMembers = reservedMembersData?.slice(0, 6);
   const viewAllMembers =
     members && members?.length > 6 ? { linkTo: '/members' } : null;
+
+  const reservedChoreMembersData =
+    choreMembers?.reduce((acc, item) => [item, ...acc], []) || [];
+  const limitedChoreMembers = reservedChoreMembersData.slice(0, 4);
+  const viewAllChoreMembers =
+    choreMembers && choreMembers?.length > 4
+      ? { linkTo: '/chores-members' }
+      : null;
+
+  const choresUnderReview = choreMembersByStatus(
+    choreMembers,
+    chores,
+    members,
+    '3'
+  );
 
   return (
     <main className="align-items-start bg-light d-flex h-100">
@@ -20,14 +42,16 @@ const Dashboard = () => {
           hasBtnAction
           viewAllLink={viewAllMembers}
         >
-          {limitedMembers?.length ? (
+          {limitedMembers?.length > 0 ? (
             limitedMembers.map((member: UserType) => (
               <div
                 key={member.id}
                 className="align-items-center d-flex justify-content-between pb-2"
               >
                 <Link to={`/members/${member.id}`}>{member.firstName}</Link>
-                <div>points: 0</div>
+                <span className="badge text-bg-primary">
+                  points: {membersPoints(member.id, choreMembers, chores)}
+                </span>
               </div>
             ))
           ) : (
@@ -39,17 +63,47 @@ const Dashboard = () => {
             </div>
           )}
         </DashboardCard>
-        <DashboardCard cardTitle="Last Chores">
-          <div className="align-items-top d-flex justify-content-between">
-            <div className="d-flex row">
-              <span>Make the Bed</span>
-              <span className="fs-7 text-body-tertiary">Lucas</span>
-            </div>
-            <div>Daily Chore</div>
-            <div>Value: 1</div>
-          </div>
+        <DashboardCard
+          cardTitle="Assigned chores"
+          viewAllLink={viewAllChoreMembers}
+        >
+          {limitedChoreMembers.length > 0 &&
+            limitedChoreMembers.map((choreMember: ChoreMemberType) => (
+              <div
+                className="align-items-top d-flex flex-row justify-content-between"
+                key={choreMember.id}
+              >
+                <div className="d-flex row col-md-8">
+                  <span>
+                    {findChoreById(choreMember.choreId, chores)?.title}
+                  </span>
+                  <span className="fs-7 text-body-tertiary">
+                    {findMemberById(choreMember.memberId, members)?.firstName}
+                  </span>
+                </div>
+                <div>
+                  {findChoreFrequencyById(choreMember.choreStatus)?.title}
+                </div>
+                <div>
+                  <span className="badge text-bg-primary">
+                    {findChoreById(choreMember.choreId, chores)?.choreValue}
+                  </span>
+                </div>
+              </div>
+            ))}
         </DashboardCard>
-        <DashboardCard cardTitle="Needs approval"> </DashboardCard>
+        <DashboardCard cardTitle="Needs to be reviewed">
+          {choresUnderReview.length > 0 &&
+            choresUnderReview.map((choreUnderView) => (
+              <div
+                className="d-flex justify-content-between mt-2"
+                key={choreUnderView.choreMemberId}
+              >
+                <div>{choreUnderView?.choreTitle}</div>
+                <div>{choreUnderView?.memberName}</div>
+              </div>
+            ))}
+        </DashboardCard>
         <DashboardCard cardTitle="Finished Chores"> </DashboardCard>
       </div>
     </main>
