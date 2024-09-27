@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Trash } from 'react-bootstrap-icons';
+import toast from 'react-hot-toast';
 import Header from '../Header';
 import SideMenu from '../SideMenu';
 import { useAuth } from '../../context/AuthContext';
@@ -11,8 +12,13 @@ import { ChoreMemberType } from '../../types/ChoresType';
 
 const ChoreMembers = () => {
   const { user, members } = useAuth();
-  const { chores, choreMembers, updateChoreMemberStatus, deleteChoreMember } =
-    useChore();
+  const {
+    chores,
+    choreMembers,
+    updateChoreMemberStatus,
+    deleteChoreMember,
+    isLoading,
+  } = useChore();
   const [showModal, setShowModal] = useState(false);
   const [selectedChoreMember, setSelectedChoreMember] =
     useState<ChoreMemberType>();
@@ -35,7 +41,11 @@ const ChoreMembers = () => {
   ) => {
     const { value } = event.target;
     const [statusId] = value.split('-');
-    updateChoreMemberStatus(statusId, choreMemberId);
+    updateChoreMemberStatus(statusId, choreMemberId)
+      .then(() => toast.success('Status changed successfully'))
+      .catch(() =>
+        toast.error('Sorry, something went wrong, please try again later')
+      );
   };
 
   const handleClose = () => setShowModal(false);

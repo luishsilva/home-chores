@@ -8,7 +8,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import Chores from './components/chores/Chores';
 import AddMember from './components/member/AddMember';
 import EditMember from './components/member/EditMember';
-import ListMembers from './components/member/ListMembers';
+import Members from './components/member/Members';
 import { AuthProvider } from './context/AuthContext';
 import { ChoresProvider } from './context/ChoresContext';
 import AddChore from './components/chores/AddChore';
@@ -33,7 +33,7 @@ const App = () => {
               <Route path="add-chore" element={<AddChore />} />
               <Route path="/assign-chore" element={<AssignChore />} />
               <Route path="/chores-members" element={<ChoreMembers />} />
-              <Route path="members" element={<ListMembers />} />
+              <Route path="members" element={<Members />} />
               <Route path="add-member" element={<AddMember />} />
               <Route path="members/:memberId" element={<EditMember />} />
             </Routes>

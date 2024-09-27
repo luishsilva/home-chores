@@ -10,7 +10,7 @@ type FilteredChoreMemberType = {
   memberName: string | undefined;
 };
 
-const choreMembersByStatus = (
+export const choreMembersByStatus = (
   choreMembers: ChoreMemberType[],
   chores: ChoreType[],
   members: UserType[],
@@ -30,4 +30,16 @@ const choreMembersByStatus = (
   return result;
 };
 
-export default choreMembersByStatus;
+export const choresByUserId = (
+  choresMembers: ChoreMemberType[],
+  memberId: string,
+  status: string
+) => {
+  const totalChores = choresMembers.filter(
+    (choreMemberItem) => choreMemberItem.memberId === memberId
+  );
+  if (!status) {
+    return totalChores;
+  }
+  return totalChores.filter((choreItem) => choreItem.choreStatus === status);
+};

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 import { useChore } from '../../context/ChoresContext';
 import { UserType } from '../../types/UserType';
@@ -7,12 +8,13 @@ import SideMenu from '../SideMenu';
 import DashboardCard from './DashboardCard';
 import { findChoreById, findChoreFrequencyById } from '../../functions/chores';
 import { findMemberById, membersPoints } from '../../functions/members';
-import choreMembersByStatus from '../../functions/choreMembers';
+import { choreMembersByStatus } from '../../functions/choreMembers';
 import { ChoreMemberType } from '../../types/ChoresType';
 
 const Dashboard = () => {
   const { members } = useAuth();
   const { chores, choreMembers, updateChoreMemberStatus } = useChore();
+
   const reservedMembersData =
     members?.reduce((acc, item) => [item, ...acc], []) || [];
   const limitedMembers = reservedMembersData?.slice(0, 6);
@@ -45,7 +47,9 @@ const Dashboard = () => {
     status: string,
     choreMemberId: string
   ) => {
-    updateChoreMemberStatus(status, choreMemberId);
+    updateChoreMemberStatus(status, choreMemberId)
+      .then(() => toast.success('Status review successfully'))
+      .catch(() => toast.error('Something went wrong, try again later'));
   };
 
   return (
@@ -114,8 +118,8 @@ const Dashboard = () => {
                 className="d-flex justify-content-between mt-2"
                 key={choreUnderView.choreMemberId}
               >
-                <div>{choreUnderView?.choreTitle}</div>
-                <div>{choreUnderView?.memberName}</div>
+                <div className="col-md-6">{choreUnderView?.choreTitle}</div>
+                <div className="col-md-3">{choreUnderView?.memberName}</div>
                 <Button
                   variant="secondary"
                   onClick={() =>
@@ -126,7 +130,7 @@ const Dashboard = () => {
                   }
                   size="sm"
                 >
-                  Approve review
+                  Review
                 </Button>
               </div>
             ))}

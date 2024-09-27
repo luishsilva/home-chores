@@ -13,7 +13,7 @@ export const membersPoints = (
   const filteredChoreMembers = choreMembers.filter(
     (choreMemberItem) =>
       choreMemberItem.memberId === memberId &&
-      choreMemberItem.choreStatus === '4'
+      choreMemberItem.choreStatus === '4' // calculate the points for chores with status 4 (done) onlye
   );
   const result = filteredChoreMembers.map((chore) => {
     return chores.find((choreItem) => choreItem.id === chore.choreId);
