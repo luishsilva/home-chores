@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import { useAuth } from '../../context/AuthContext';
 import { useChore } from '../../context/ChoresContext';
 import { UserType } from '../../types/UserType';
@@ -11,7 +12,7 @@ import { ChoreMemberType } from '../../types/ChoresType';
 
 const Dashboard = () => {
   const { members } = useAuth();
-  const { chores, choreMembers } = useChore();
+  const { chores, choreMembers, updateChoreMemberStatus } = useChore();
   const reservedMembersData =
     members?.reduce((acc, item) => [item, ...acc], []) || [];
   const limitedMembers = reservedMembersData?.slice(0, 6);
@@ -32,6 +33,20 @@ const Dashboard = () => {
     members,
     '3'
   );
+
+  const choresNotStarted = choreMembersByStatus(
+    choreMembers,
+    chores,
+    members,
+    '1'
+  );
+
+  const handleUpdateChoreMemberStatus = (
+    status: string,
+    choreMemberId: string
+  ) => {
+    updateChoreMemberStatus(status, choreMemberId);
+  };
 
   return (
     <main className="align-items-start bg-light d-flex h-100">
@@ -101,10 +116,33 @@ const Dashboard = () => {
               >
                 <div>{choreUnderView?.choreTitle}</div>
                 <div>{choreUnderView?.memberName}</div>
+                <Button
+                  variant="secondary"
+                  onClick={() =>
+                    handleUpdateChoreMemberStatus(
+                      '4',
+                      choreUnderView.choreMemberId
+                    )
+                  }
+                  size="sm"
+                >
+                  Approve review
+                </Button>
               </div>
             ))}
         </DashboardCard>
-        <DashboardCard cardTitle="Finished Chores"> </DashboardCard>
+        <DashboardCard cardTitle="Chores not started">
+          {choresNotStarted.length > 0 &&
+            choresNotStarted.map((choreUnderView) => (
+              <div
+                className="d-flex justify-content-between mt-2"
+                key={choreUnderView.choreMemberId}
+              >
+                <div>{choreUnderView?.choreTitle}</div>
+                <div>{choreUnderView?.memberName}</div>
+              </div>
+            ))}
+        </DashboardCard>
       </div>
     </main>
   );

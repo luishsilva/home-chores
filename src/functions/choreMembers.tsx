@@ -6,6 +6,7 @@ import { findMemberById } from './members';
 type FilteredChoreMemberType = {
   choreMemberId: string | undefined;
   choreTitle: string | undefined;
+  memberId: string | undefined;
   memberName: string | undefined;
 };
 
@@ -22,6 +23,7 @@ const choreMembersByStatus = (
   const result = filtered.map((data) => ({
     choreMemberId: data.id,
     choreTitle: findChoreById(data.choreId, chores)?.title,
+    memberId: data.memberId,
     memberName: findMemberById(data.memberId, members)?.firstName,
   }));
 
