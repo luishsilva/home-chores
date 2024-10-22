@@ -55,9 +55,6 @@ const Chores = () => {
               <Link className="btn btn-primary" to="/add-chore">
                 Add Chore
               </Link>
-              <Link className="btn btn-primary ms-2" to="/assign-chore">
-                Assign Chore to a member
-              </Link>
             </div>
           </Header>
           <div className="d-flex flex-wrap gap-3 p-3">
