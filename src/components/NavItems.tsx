@@ -1,4 +1,10 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import {
+  CardChecklist,
+  ClipboardData,
+  People,
+  PersonVcard,
+} from 'react-bootstrap-icons';
 import { useAuth } from '../context/AuthContext';
 
 const NavItems = () => {
@@ -7,13 +13,49 @@ const NavItems = () => {
   return (
     <div className="d-flex flex-column justify-content-between h-100 nav-items-height align-items-center">
       <div className="d-flex flex-column">
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/members">Members</Link>
-        <Link to="/chores">Chores</Link>
-        <Link to="/chores-members">Chores/Members</Link>
+        <NavLink
+          className={({ isActive }) =>
+            `nav-link${!isActive ? ' nav-link-unselected' : ''}`
+          }
+          to="/dashboard"
+        >
+          <div className="d-flex align-items-center">
+            <ClipboardData className=" me-1" /> <div>Dashboard</div>
+          </div>
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            `nav-link${!isActive ? ' nav-link-unselected' : ''} mt-2`
+          }
+          to="/members"
+        >
+          <div className="d-flex align-items-center">
+            <People className=" me-1" /> <span>Members</span>
+          </div>
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            `nav-link${!isActive ? ' nav-link-unselected' : ''} mt-2`
+          }
+          to="/chores"
+        >
+          <div className="d-flex align-items-center">
+            <CardChecklist className=" me-1" /> <span>Chores</span>
+          </div>
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            `nav-link${!isActive ? ' nav-link-unselected' : ''} mt-2`
+          }
+          to="/chores-members"
+        >
+          <div className="d-flex align-items-center">
+            <PersonVcard className=" me-1" /> <span>Chores/Members</span>
+          </div>
+        </NavLink>
       </div>
       <div className="mb-3">
-        <button type="button" onClick={logOff}>
+        <button className="btn btn-danger" type="button" onClick={logOff}>
           Logoff
         </button>
       </div>
