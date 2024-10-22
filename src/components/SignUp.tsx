@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 
 const SignUp = () => {
   const [formInputValues, setFormInputValues] = useState({
+    id: '',
     email: '',
     firstName: '',
     isLogged: false,
