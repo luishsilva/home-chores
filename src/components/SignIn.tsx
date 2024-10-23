@@ -86,7 +86,6 @@ const SignIn = () => {
             type="email"
           />
           {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
-
           <label className="mt-1" htmlFor="login-email">
             Email address
           </label>
