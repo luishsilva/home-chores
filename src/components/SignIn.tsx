@@ -55,8 +55,6 @@ const SignIn = () => {
       });
     } catch (err) {
       const validationErrors: Record<string, string> = {};
-
-      // Map Yup validation errors to error state
       if (err instanceof yup.ValidationError) {
         err.inner.forEach((error) => {
           if (error.path) {

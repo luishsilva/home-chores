@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import * as yup from 'yup';
 import { useAuth } from '../context/AuthContext';
+
+type TypeErrors = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+};
 
 const SignUp = () => {
   const [formInputValues, setFormInputValues] = useState({
@@ -15,6 +23,18 @@ const SignUp = () => {
 
   const { signUp, isLoading } = useAuth();
 
+  const [errors, setErrors] = useState<TypeErrors>({});
+
+  const validationSchema = yup.object().shape({
+    firstName: yup.string().required('First name is required'),
+    lastName: yup.string().required('Last name is required'),
+    email: yup
+      .string()
+      .email('Must be a valid email')
+      .required('Email is required'),
+    password: yup.string().required('Password is required'),
+  });
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
@@ -22,13 +42,34 @@ const SignUp = () => {
       ...prevState,
       [name]: value,
     }));
+
+    setErrors((prevErrorState) => ({
+      ...prevErrorState,
+      [name]: null,
+    }));
   };
 
-  const handleSignUpClick: React.MouseEventHandler<HTMLButtonElement> = (
+  const handleSignUpClick: React.MouseEventHandler<HTMLButtonElement> = async (
     event
   ) => {
     event.preventDefault();
-    signUp(formInputValues);
+
+    try {
+      await validationSchema.validate(formInputValues, { abortEarly: false });
+      setErrors({});
+
+      signUp(formInputValues);
+    } catch (err) {
+      const validationErrors: Record<string, string> = {};
+      if (err instanceof yup.ValidationError) {
+        err.inner.forEach((error) => {
+          if (error.path) {
+            validationErrors[error.path] = error.message;
+          }
+        });
+        setErrors(validationErrors);
+      }
+    }
     return null;
   };
 
@@ -50,6 +91,9 @@ const SignUp = () => {
             placeholder="John"
             type="text"
           />
+          {errors.firstName && (
+            <p style={{ color: 'red' }}>{errors.firstName}</p>
+          )}
           <label className="mt-1" htmlFor="firstName">
             First name
           </label>
@@ -63,6 +107,7 @@ const SignUp = () => {
             placeholder="Doe"
             type="text"
           />
+          {errors.lastName && <p style={{ color: 'red' }}>{errors.lastName}</p>}
           <label className="mt-1" htmlFor="lastName">
             Last name
           </label>
@@ -76,6 +121,7 @@ const SignUp = () => {
             placeholder="name@example.com"
             type="email"
           />
+          {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
           <label className="mt-1" htmlFor="email">
             Email address
           </label>
@@ -89,6 +135,7 @@ const SignUp = () => {
             placeholder="Password"
             type="password"
           />
+          {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
           <label className="mt-1" htmlFor="password">
             Password
           </label>
