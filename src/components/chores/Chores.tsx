@@ -57,7 +57,7 @@ const Chores = () => {
               </Link>
             </div>
           </Header>
-          <div className="d-flex flex-wrap gap-3 p-3">
+          <div className="d-flex flex-wrap gap-3 p-3 overflow-auto">
             {reservedData &&
               reservedData.map((chore: ChoreType) => (
                 <div className="d-flex" key={chore.id}>

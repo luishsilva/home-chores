@@ -47,7 +47,7 @@ const ListMembers = () => {
               Add member
             </Link>
           </Header>
-          <div className="d-flex flex-wrap gap-3 p-3">
+          <div className="d-flex flex-wrap gap-3 p-3 overflow-auto">
             {members &&
               members.map((member: UserType) => (
                 <div className="d-flex" key={member.id}>

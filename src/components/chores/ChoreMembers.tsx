@@ -78,7 +78,7 @@ const ChoreMembers = () => {
               Assign Chore to a member
             </Link>
           </Header>
-          <div className="d-flex flex-wrap gap-3 p-3">
+          <div className="d-flex flex-wrap gap-3 p-3 overflow-auto">
             {choreMembers &&
               choreMembers.map((choreMember) => (
                 <div className="d-flex" key={choreMember.id}>
