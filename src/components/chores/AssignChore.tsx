@@ -1,8 +1,14 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import * as yup from 'yup';
 import { useChore } from '../../context/ChoresContext';
 import { useAuth } from '../../context/AuthContext';
 import SideMenu from '../SideMenu';
+
+type ChoreMemberFormErrorsType = {
+  memberId?: string;
+  choreId?: string;
+};
 
 const AssignChore = () => {
   const initialValues = {
@@ -14,8 +20,14 @@ const AssignChore = () => {
   };
 
   const [formInputValues, setFormInputValues] = useState(initialValues);
+  const [errors, setErrors] = useState<ChoreMemberFormErrorsType>({});
   const { isLoading, chores, addChoreMember } = useChore();
   const { members } = useAuth();
+
+  const validationSchema = yup.object().shape({
+    memberId: yup.string().required('Member is required'),
+    choreId: yup.string().required('Chore is required'),
+  });
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
@@ -23,15 +35,36 @@ const AssignChore = () => {
       ...prevState,
       [name]: value,
     }));
+
+    setErrors((prevErrorState) => ({
+      ...prevErrorState,
+      [name]: null,
+    }));
   };
 
-  const handleBtnSubmitClick: React.MouseEventHandler<HTMLButtonElement> = (
-    event
-  ) => {
+  const handleBtnSubmitClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = async (event) => {
     event.preventDefault();
-    addChoreMember(formInputValues).then(() =>
-      toast.success('Chore assigned successfully')
-    );
+
+    try {
+      await validationSchema.validate(formInputValues, { abortEarly: false });
+      setErrors({});
+
+      addChoreMember(formInputValues).then(() =>
+        toast.success('Chore assigned successfully')
+      );
+    } catch (err) {
+      const validationErrors: Record<string, string> = {};
+      if (err instanceof yup.ValidationError) {
+        err.inner.forEach((error) => {
+          if (error.path) {
+            validationErrors[error.path] = error.message;
+          }
+        });
+      }
+      setErrors(validationErrors);
+    }
   };
 
   const { choreId, memberId } = formInputValues;
@@ -52,7 +85,7 @@ const AssignChore = () => {
               onChange={handleSelectChange}
               value={memberId}
             >
-              <option value="">Select chore type</option>
+              <option value="">Select Member</option>
               {members &&
                 members.map((member) => (
                   <option key={member.id} value={member.id}>
@@ -60,6 +93,9 @@ const AssignChore = () => {
                   </option>
                 ))}
             </select>
+            {errors.memberId && (
+              <p style={{ color: 'red' }}>{errors.memberId}</p>
+            )}
           </div>
           <div className="mb-3">
             <label className="mt-1" htmlFor="firstName">
@@ -80,6 +116,7 @@ const AssignChore = () => {
                   </option>
                 ))}
             </select>
+            {errors.choreId && <p style={{ color: 'red' }}>{errors.choreId}</p>}
           </div>
           <button
             className="btn btn-primary w-100 py-2 mb-2 mt-3"
