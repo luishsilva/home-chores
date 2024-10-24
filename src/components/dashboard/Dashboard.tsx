@@ -16,14 +16,18 @@ const Dashboard = () => {
   const { chores, choreMembers, updateChoreMemberStatus } = useChore();
 
   const reservedMembersData =
-    members?.reduce((acc, item) => [item, ...acc], []) || [];
+    members?.reduce<UserType[]>((acc, item) => [item, ...acc], []) || [];
   const limitedMembers = reservedMembersData?.slice(0, 6);
   const viewAllMembers =
     members && members?.length > 6 ? { linkTo: '/members' } : null;
 
   const reservedChoreMembersData =
-    choreMembers?.reduce((acc, item) => [item, ...acc], []) || [];
+    choreMembers?.reduce<ChoreMemberType[]>(
+      (acc, item) => [item, ...acc],
+      []
+    ) || [];
   const limitedChoreMembers = reservedChoreMembersData.slice(0, 4);
+
   const viewAllChoreMembers =
     choreMembers && choreMembers?.length > 4
       ? { linkTo: '/chores-members' }
@@ -113,19 +117,19 @@ const Dashboard = () => {
         </DashboardCard>
         <DashboardCard cardTitle="Needs to be reviewed">
           {choresUnderReview.length > 0 &&
-            choresUnderReview.map((choreUnderView) => (
+            choresUnderReview.map((choreUnderReView) => (
               <div
                 className="d-flex justify-content-between mt-2"
-                key={choreUnderView.choreMemberId}
+                key={choreUnderReView.choreMemberId}
               >
-                <div className="col-md-6">{choreUnderView?.choreTitle}</div>
-                <div className="col-md-3">{choreUnderView?.memberName}</div>
+                <div className="col-md-6">{choreUnderReView?.choreTitle}</div>
+                <div className="col-md-3">{choreUnderReView?.memberName}</div>
                 <Button
                   variant="secondary"
                   onClick={() =>
                     handleUpdateChoreMemberStatus(
                       '4',
-                      choreUnderView.choreMemberId
+                      choreUnderReView.choreMemberId
                     )
                   }
                   size="sm"
