@@ -56,7 +56,7 @@ const UserForm: React.FC<UserFormType> = ({
 
     setErrors((prevErrorState) => ({
       ...prevErrorState,
-      [name]: value,
+      [name]: null,
     }));
   };
 
@@ -68,6 +68,7 @@ const UserForm: React.FC<UserFormType> = ({
     try {
       await validationSchema.validate(formInputValues, { abortEarly: false });
       setErrors({});
+
       btnSubmitAction(formInputValues).then(() => {
         setFormInputValues(initialValues);
         toast.success('Action successfully executed.');
@@ -83,9 +84,8 @@ const UserForm: React.FC<UserFormType> = ({
             validationErrors[error.path] = error.message;
           }
         });
-
-        setErrors(validationErrors);
       }
+      setErrors(validationErrors);
     }
   };
   const { firstName, lastName, email, password } = formInputValues;
