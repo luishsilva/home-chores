@@ -129,7 +129,7 @@ const Dashboard = () => {
                   onClick={() =>
                     handleUpdateChoreMemberStatus(
                       '4',
-                      choreUnderReView.choreMemberId
+                      choreUnderReView.choreMemberId ?? ''
                     )
                   }
                   size="sm"

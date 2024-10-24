@@ -12,13 +12,8 @@ import { ChoreMemberType } from '../../types/ChoresType';
 
 const ChoreMembers = () => {
   const { user, members } = useAuth();
-  const {
-    chores,
-    choreMembers,
-    updateChoreMemberStatus,
-    deleteChoreMember,
-    isLoading,
-  } = useChore();
+  const { chores, choreMembers, updateChoreMemberStatus, deleteChoreMember } =
+    useChore();
   const [showModal, setShowModal] = useState(false);
   const [selectedChoreMember, setSelectedChoreMember] =
     useState<ChoreMemberType>();
