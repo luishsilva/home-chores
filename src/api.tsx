@@ -31,9 +31,10 @@ const getUserGroupMembers = () => {
 };
 
 const postSignUp = async (user: UserType) => {
+  const { id, ...userRemovedId } = user;
   return fetch(`${BASE_URL}/users`, {
     body: JSON.stringify({
-      ...user,
+      ...userRemovedId,
       isAdmin: true,
     }),
     method: 'POST',

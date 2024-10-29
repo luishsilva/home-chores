@@ -23,6 +23,7 @@ const UserForm: React.FC<UserFormType> = ({
   member,
 }) => {
   const initialValues = {
+    id: '',
     email: '',
     firstName: '',
     isLogged: false,
