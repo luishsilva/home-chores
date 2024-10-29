@@ -9,6 +9,7 @@ import {
   useEffect,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { UserMemberType, UserSignInType, UserType } from '../types/UserType';
 import Requests from '../api';
 
@@ -70,8 +71,9 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
       const usersResponse = await Requests.getAllUsers();
 
       const membersResponse = await Requests.getUserGroupMembers();
+
       // Merge members with users table
-      const matchingUserMembers = membersResponse.reduce(
+      const matchingUserMembers = membersResponse?.reduce(
         (acc: UserType[], member: UserMemberType) => {
           const membersData = usersResponse.filter(
             (userList: UserType) => userList?.id === member?.userId
@@ -128,11 +130,9 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
         const passwordFound = response.find(
           (res: UserSignInType) => res.password === password
         );
-        if (!emailFound) {
-          throw new Error('Email not found');
-        }
-        if (!passwordFound) {
-          throw new Error('Password not found');
+        if (!emailFound || !passwordFound) {
+          toast.error('User name or password are incorrect.');
+          return;
         }
 
         const loggedUser = { ...emailFound, isLogged: true };

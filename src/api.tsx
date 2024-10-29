@@ -16,6 +16,8 @@ const getAllUsers = () => {
 };
 
 const getUserGroupMembers = () => {
+  if (!getCurrentUserId()) return null;
+
   const { id: currentUserId } = getCurrentUserId();
 
   return fetch(`${BASE_URL}/user_members?groupOwnerId=${currentUserId}`, {
