@@ -209,7 +209,9 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
   const contextValue = useMemo(
     () => ({
       addChore,
+      chore,
       chores,
+      choreMember,
       deleteChore,
       updateChore,
 
@@ -222,7 +224,9 @@ export const ChoresProvider: FC<ChoreProviderType> = ({ children }) => {
     }),
     [
       addChore,
+      chore,
       chores,
+      choreMember,
       deleteChore,
       updateChore,
 
