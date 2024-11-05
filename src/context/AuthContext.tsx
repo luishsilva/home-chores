@@ -58,7 +58,7 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState<UserType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [members, setMembers] = useState<UserType[] | null>(null);
+  const [members, setMembers] = useState<UserType[]>([]);
 
   const fetchData = async () => {
     const isUserLocalStorage = localStorage.getItem('currentUser');
