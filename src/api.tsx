@@ -91,9 +91,11 @@ const postUserMember = async (member: UserMemberType) => {
 // Add the member in the users "table"
 const postAddMember = async (user: UserType) => {
   try {
+    const { id, ...userWithoutId } = user;
+
     const response = await fetch(`${BASE_URL}/users`, {
       body: JSON.stringify({
-        ...user,
+        ...userWithoutId,
         isAdmin: false,
       }),
       method: 'POST',
@@ -105,13 +107,14 @@ const postAddMember = async (user: UserType) => {
     if (!response.ok) {
       throw new Error(`HTTP failed: ${response.statusText}`);
     }
-    const { id } = getCurrentUserId();
+
+    const { id: currentUserId } = getCurrentUserId();
     const data = await response.json();
 
-    if (id) {
+    if (currentUserId) {
       await postUserMember({
         userId: data.id,
-        groupOwnerId: id,
+        groupOwnerId: currentUserId,
       });
     } else {
       throw new Error('No current user found or user ID missing.');
