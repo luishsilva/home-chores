@@ -77,10 +77,7 @@ const UserForm: React.FC<UserFormType> = ({
     } catch (err) {
       const validationErrors: Record<string, string> = {};
       if (err instanceof yup.ValidationError) {
-        // console.log(err.errors);
-        // console.log(err.inner);
         err.inner.forEach((error) => {
-          // console.log(error.path);
           if (error.path) {
             validationErrors[error.path] = error.message;
           }
