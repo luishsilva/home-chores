@@ -153,7 +153,7 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
 
   const logOff = useCallback(() => {
     setUser(null);
-    setMembers(null);
+    setMembers([]);
     localStorage.removeItem('currentUser');
     navigate('/login');
   }, [navigate]);

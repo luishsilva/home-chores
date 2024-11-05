@@ -1,148 +1,18 @@
 {
   "users": [
     {
-      "id": "2d51",
+      "id": "9175",
       "email": "luis@gmail.com",
       "firstName": "Luis",
-      "lastName": "Silva",
-      "password": "q1w2e3",
+      "lastName": "da Silva",
+      "password": "q1w2e3r4",
       "thumbnail": "",
-      "isAdmin": true
-    },
-    {
-      "id": "702a",
-      "email": "lucas@gmail.com",
-      "firstName": "Lucas",
-      "lastName": "Silva",
-      "password": "q1w2e3",
-      "thumbnail": "",
-      "isAdmin": true
-    },
-    {
-      "id": "eb7e",
-      "email": "luisa@gmail.com",
-      "firstName": "Luisa",
-      "lastName": "Silva",
-      "password": "q1w2e3",
-      "thumbnail": "",
-      "isAdmin": true
-    },
-    {
-      "id": "e3da",
-      "email": "luana@gmail.com",
-      "firstName": "Luana",
-      "lastName": "Silva",
-      "password": "q1w2e3",
-      "thumbnail": "",
+      "isLogged": true,
       "isAdmin": true
     }
   ],
-  "chores": [
-    {
-      "id": 1,
-      "title": "Make the Bed",
-      "description": "Straighten sheets and pillows.",
-      "points": 0,
-      "userId": 1,
-      "choresTypeId": 1,
-      "choresStatusId": 1
-    },
-    {
-      "id": 2,
-      "title": "Wash Dishes",
-      "description": "Clean dishes, utensils, and cookware.",
-      "points": 0,
-      "userId": 1,
-      "choresTypeId": 1,
-      "choresStatusId": 2
-    },
-    {
-      "id": 3,
-      "title": "Wipe Down Counters",
-      "description": "Clean kitchen and bathroom counter tops.",
-      "points": 0,
-      "userId": 1,
-      "choresTypeId": 3,
-      "choresStatusId": 4
-    },
-    {
-      "id": 4,
-      "title": "Sweep/Vacuum Floors",
-      "description": "Remove dirt and debris from floors.",
-      "points": 0,
-      "userId": 1,
-      "choresTypeId": 2,
-      "choresStatusId": 1
-    },
-    {
-      "id": 5,
-      "title": "Take Out the Trash",
-      "description": "Empty household trash bins",
-      "points": 0,
-      "userId": 1,
-      "choresTypeId": 4,
-      "choresStatusId": 2
-    },
-    {
-      "id": 7,
-      "title": "Laundry",
-      "description": "Wash and dry clothes.",
-      "points": 0,
-      "userId": 1,
-      "choresTypeId": 1,
-      "choresStatusId": 1
-    },
-    {
-      "id": 8,
-      "title": "Tidy Up",
-      "description": "Put away clutter and organize spaces.",
-      "points": 0,
-      "userId": 1,
-      "choresTypeId": 1,
-      "choresStatusId": 1
-    }
+  "user_members": [
   ],
-  "chores_type": [
-    {
-      "id": 1,
-      "title": "Daily Chores"
-    },
-    {
-      "id": 2,
-      "title": "Weekly Chores"
-    },
-    {
-      "id": 3,
-      "title": "Weekly Chores"
-    },
-    {
-      "id": 4,
-      "title": "Monthly Chores"
-    },
-    {
-      "id": 5,
-      "title": "Seasonal/Annual Chores"
-    }
-  ],
-  "chore_status": [
-    {
-      "id": 1,
-      "title": "Started"
-    },
-    {
-      "id": 2,
-      "title": "Under review"
-    },
-    {
-      "id": 3,
-      "title": "Done"
-    }
-  ],
-  "participants_chores": [
-    {
-      "participant_id": 1,
-      "chore_id": 1,
-      "chore_status": 1
-    }
-  ]
+  "chores": [],
+  "chore_members": []
 }
