@@ -107,7 +107,7 @@ export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
           const newUser = { ...userData, isLogged: false };
           localStorage.setItem('currentUser', JSON.stringify(newUser));
           setUser(newUser);
-          navigate('/login');
+          navigate('/dashboard');
         })
         .catch(() => {
           throw new Error('Sorry something went wrong, please try again later');
